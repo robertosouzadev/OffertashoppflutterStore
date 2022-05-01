@@ -10,6 +10,8 @@ import 'package:vendor/Theme/colors.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/aboutus.dart';
 
+import '../../constants/images_constants.dart';
+
 class AboutUsPage extends StatefulWidget {
   @override
   _AboutUsPageState createState() => _AboutUsPageState();
@@ -62,13 +64,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
           physics: BouncingScrollPhysics(),
           children: [
             Image.asset(
-              'assets/icon.png',
+              ImageConstants.APP_LOGO,
               scale: 2.5,
               height: 280,
             ),
             Text(
               (title != null) ? '$title' : '',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.grey[400]),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Colors.grey[400]),
             ),
             SizedBox(
               height: 20,

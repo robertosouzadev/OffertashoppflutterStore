@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -12,10 +13,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:vendor/Components/custom_button.dart';
 import 'package:vendor/Components/entry_field.dart';
+import 'package:vendor/Components/my_hero_widget.dart';
 import 'package:vendor/Locale/locales.dart';
-import 'package:vendor/Theme/colors.dart';
+import 'package:vendor/Theme/style.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/profilebean/storeprofile.dart';
+import 'package:vendor/constants/color.dart';
+import 'package:vendor/widgets/my_header.dart';
+import 'package:vendor/widgets/my_text_field.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -54,10 +59,12 @@ class _MyProfileState extends State<MyProfile> {
       storeImage = '${prefs.getString('store_photo')}';
     });
     var https = http.Client();
-    https.post(storeProfileUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    https.post(storeProfileUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       print(value.body);
       if (value.statusCode == 200) {
-        StoreProfileMain jsData = StoreProfileMain.fromJson(jsonDecode(value.body));
+        StoreProfileMain jsData =
+            StoreProfileMain.fromJson(jsonDecode(value.body));
         if ('${jsData.status}' == '1') {
           setState(() {
             sellerNameC.text = '${jsData.data.owner_name}';
@@ -123,7 +130,8 @@ class _MyProfileState extends State<MyProfile> {
         setState(() {
           _image = null;
         });
-        Toast.show('upload image less then 1000 kb', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+        Toast.show('A imagem deve ser menor que 1000 kb', context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
       } else {
         setState(() {
           _image = result;
@@ -183,183 +191,191 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Stack(
-                  alignment: Alignment.bottomLeft,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _image != null
-                        ? Container(
-                            padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
-                            width: MediaQuery.of(context).size.width,
-                            height: 230,
-                            alignment: Alignment.center,
-                            child: Image.file(
-                              _image,
-                              fit: BoxFit.contain,
-                            ),
-                          )
-                        : Container(
-                            padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
-                            width: MediaQuery.of(context).size.width,
-                            height: 230,
-                            alignment: Alignment.center,
-                            child: CachedNetworkImage(
+                        ? Center(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 30, left: 10, right: 10),
                               width: MediaQuery.of(context).size.width,
                               height: 230,
-                              imageUrl: '$storeImage',
-                              fit: BoxFit.fill,
-                              placeholder: (context, url) => Align(
-                                widthFactor: 50,
-                                heightFactor: 50,
-                                alignment: Alignment.center,
-                                child: Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  width: 50,
-                                  height: 50,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                'assets/icon.png',
-                                fit: BoxFit.fill,
+                              alignment: Alignment.center,
+                              child: Image.file(
+                                _image,
+                                fit: BoxFit.contain,
                               ),
                             ),
+                          )
+                        : Center(
+                            child: Column(children: [
+                              SizedBox(height: 36),
+                              Container(
+                                height: 84,
+                                width: 84,
+                                child: CircleAvatar(
+                                  backgroundColor: Theme.of(context)
+                                      .primaryColor
+                                      .withAlpha(30),
+                                  child: Image(
+                                    image: NetworkImage('$storeImage'),
+                                    filterQuality: FilterQuality.medium,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Bem vindo',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(storeNameC.text),
+                            ]),
                           ),
-                    Positioned.directional(
-                        top: 40,
-                        textDirection: Directionality.of(context),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: kMainTextColor,
-                            ))),
+                    GestureDetector(
+                      onTap: () {
+                        _showPicker(context);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Align(
+                        child: Icon(
+                          Icons.add_photo_alternate_outlined,
+                          size: 24,
+                          color: Color.fromARGB(255, 85, 81, 81),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _showPicker(context);
-                  },
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 15),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: kMainTextColor,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          locale.changeCoverImage,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(color: kMainTextColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 12),
-                  child: Text(
-                    locale.setProfileInfo,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                EntryField(
-                  label: locale.storename1,
-                  hint: locale.storename2,
-                  labelFontSize: 16,
-                  labelFontWeight: FontWeight.w400,
-                  controller: storeNameC,
-                ),
-                EntryField(
-                  label: locale.sellerName,
-                  labelFontSize: 16,
-                  labelFontWeight: FontWeight.w400,
-                  controller: sellerNameC,
-                ),
-                EntryField(
-                  label: locale.emailAddress,
-                  labelFontSize: 16,
-                  labelFontWeight: FontWeight.w400,
-                  controller: emailAddressC,
-                ),
-                EntryField(
-                  label: locale.password1,
-                  hint: 'enter new password if you want to change',
-                  hintStyle: TextStyle(fontSize: 16),
-                  labelFontSize: 16,
-                  labelFontWeight: FontWeight.w400,
-                  controller: passwordC,
-                ),
-                EntryField(
-                  label: locale.phoneNumber,
-                  labelFontSize: 16,
-                  readOnly: true,
-                  labelFontWeight: FontWeight.w400,
-                  controller: phoneNumberC,
-                ),
-                Divider(
-                  height: 30,
-                  thickness: 8,
-                  color: Colors.grey[100],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Text(
-                    'Seller Address',
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Text(
-                    'you cannot change it if you want to change it contact admin',
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8),
-                //   child: Column(
-                //     children: [
-                //       Row(
-                //         children: [
-                //           Text(
-                //             'you cannot change it if you want to change it contact admin',
-                //             style: Theme.of(context).textTheme.subtitle2.copyWith(fontWeight: FontWeight.w500, fontSize: 16),
-                //           ),
-                //           Spacer(),
-                //           Icon(
-                //             Icons.location_on,
-                //             color: Theme.of(context).primaryColor,
-                //           ),
-                //         ],
-                //       ),
 
-                //     ],
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //       horizontal: 22.0, vertical: 12),
+                //   child: Text(
+                //     locale.setProfileInfo,
+                //     style: h2black(context),
+                //     textAlign: TextAlign.center,
                 //   ),
                 // ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: TextFormField(
-                    maxLines: 3,
-                    controller: addressC,
-                    readOnly: true,
-                    decoration: InputDecoration(enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey[200]))),
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 28),
+                  child: Column(
+                    children: [
+                      MyTextField(
+                        Key('1'),
+                        prefixIcon: Icon(Icons.store_mall_directory_outlined),
+                        prefixText: locale.storename1,
+                        hintText: locale.storename2,
+                        controller: storeNameC,
+                      ),
+                      SizedBox(height: 8),
+                      MyTextField(
+                        Key('2'),
+                        prefixIcon: Icon(Icons.person),
+                        prefixText: locale.sellerName,
+                        controller: sellerNameC,
+                      ),
+                      SizedBox(height: 8),
+                      MyTextField(
+                        Key('3'),
+                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixText: locale.emailAddress,
+                        controller: emailAddressC,
+                      ),
+                      SizedBox(height: 8),
+                      MyTextField(
+                        Key('4'),
+                        prefixIcon: Icon(Icons.password),
+                        prefixText: locale.password1,
+                        hintText: 'Informe a nova senha',
+                        controller: passwordC,
+                      ),
+                      SizedBox(height: 8),
+                      MyTextField(
+                        Key('5'),
+                        prefixIcon: Icon(Icons.phone_android_outlined),
+                        prefixText: locale.phoneNumber,
+                        readOnly: true,
+                        controller: phoneNumberC,
+                      ),
+                      SizedBox(height: 8),
+                      Divider(
+                        height: 30,
+                        thickness: 8,
+                        color: Colors.grey[100],
+                      ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Text(
+                          'Endereço',
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Text(
+                          'you cannot change it if you want to change it contact admin',
+                          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.w500, fontSize: 16),
+                        ),
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8),
+                      //   child: Column(
+                      //     children: [
+                      //       Row(
+                      //         children: [
+                      //           Text(
+                      //             'you cannot change it if you want to change it contact admin',
+                      //             style: Theme.of(context).textTheme.subtitle2.copyWith(fontWeight: FontWeight.w500, fontSize: 16),
+                      //           ),
+                      //           Spacer(),
+                      //           Icon(
+                      //             Icons.location_on,
+                      //             color: Theme.of(context).primaryColor,
+                      //           ),
+                      //         ],
+                      //       ),
+
+                      //     ],
+                      //   ),
+                      // ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: TextFormField(
+                          maxLines: 3,
+                          controller: addressC,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 60,
-                ),
+                )
               ],
             ),
           ),
@@ -369,9 +385,13 @@ class _MyProfileState extends State<MyProfile> {
                   child: CustomButton(
                     onTap: () {
                       if (storeNameC.text != null) {
-                        if (emailAddressC.text != null && emailValidator(emailAddressC.text)) {
-                          if (sellerNameC.text != null && sellerNameC.text.length > 0) {
-                            String fid = (_image != null) ? _image.path.split('/').last : null;
+                        if (emailAddressC.text != null &&
+                            emailValidator(emailAddressC.text)) {
+                          if (sellerNameC.text != null &&
+                              sellerNameC.text.length > 0) {
+                            String fid = (_image != null)
+                                ? _image.path.split('/').last
+                                : null;
                             if (fid != null && fid.length > 0) {
                               updateWithImage(fid);
                             } else {
@@ -381,19 +401,25 @@ class _MyProfileState extends State<MyProfile> {
                             setState(() {
                               isLoading = false;
                             });
-                            Toast.show(locale.incorectUserName, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                            Toast.show(locale.incorectUserName, context,
+                                gravity: Toast.CENTER,
+                                duration: Toast.LENGTH_SHORT);
                           }
                         } else {
                           setState(() {
                             isLoading = false;
                           });
-                          Toast.show(locale.incorectEmail, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                          Toast.show(locale.incorectEmail, context,
+                              gravity: Toast.CENTER,
+                              duration: Toast.LENGTH_SHORT);
                         }
                       } else {
                         setState(() {
                           isLoading = false;
                         });
-                        Toast.show(locale.incorectUserName, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                        Toast.show(locale.incorectUserName, context,
+                            gravity: Toast.CENTER,
+                            duration: Toast.LENGTH_SHORT);
                       }
                     },
                     label: locale.update,
@@ -418,7 +444,9 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   bool emailValidator(email) {
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 
   void updateWithImage(String fileP) async {
@@ -430,8 +458,12 @@ class _MyProfileState extends State<MyProfile> {
       'store_name': '${storeNameC.text}',
       'store_phone': '${phoneNumberC.text}',
       'store_email': '${emailAddressC.text}',
-      if (passwordC.text != null && passwordC.text != '' && passwordC.text.isNotEmpty) 'password': '${passwordC.text}',
-      'store_photo': _image != null ? await MultipartFile.fromFile(_image.path) : null,
+      if (passwordC.text != null &&
+          passwordC.text != '' &&
+          passwordC.text.isNotEmpty)
+        'password': '${passwordC.text}',
+      'store_photo':
+          _image != null ? await MultipartFile.fromFile(_image.path) : null,
     });
 
     await dio
@@ -443,9 +475,11 @@ class _MyProfileState extends State<MyProfile> {
         .then((response) {
       if (response != null) {
         print('success');
-        Toast.show(response.data['message'], context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+        Toast.show(response.data['message'], context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
 
-        StoreProfileDataMain jsData = StoreProfileDataMain.fromJson(response.data['data'][0]);
+        StoreProfileDataMain jsData =
+            StoreProfileDataMain.fromJson(response.data['data'][0]);
         setState(() {
           sellerNameC.text = '${jsData.owner_name}';
           storeNameC.text = '${jsData.store_name}';
@@ -516,14 +550,19 @@ class _MyProfileState extends State<MyProfile> {
       'store_name': '${storeNameC.text}',
       'store_phone': '${phoneNumberC.text}',
       'store_email': '${emailAddressC.text}',
-      if (passwordC.text != null && passwordC.text != '' && passwordC.text.isNotEmpty) 'password': '${passwordC.text}',
+      if (passwordC.text != null &&
+          passwordC.text != '' &&
+          passwordC.text.isNotEmpty)
+        'password': '${passwordC.text}',
       'store_photo': '',
     }).then((value) {
       print('${value.body}');
       if (value.statusCode == 200) {
-        StoreProfileMain jsData = StoreProfileMain.fromJson(jsonDecode(value.body));
+        StoreProfileMain jsData =
+            StoreProfileMain.fromJson(jsonDecode(value.body));
         if ('${jsData.status}' == '1') {
-          Toast.show(jsData.message, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+          Toast.show(jsData.message, context,
+              gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
           setState(() {
             sellerNameC.text = '${jsData.data.owner_name}';
             storeNameC.text = '${jsData.data.store_name}';

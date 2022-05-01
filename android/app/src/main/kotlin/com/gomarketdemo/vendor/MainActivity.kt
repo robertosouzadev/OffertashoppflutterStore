@@ -1,4 +1,4 @@
-package com.gogrocerstore.app
+package com.rssystem.comprafacilgestao
 
 import io.flutter.embedding.android.FlutterActivity
 

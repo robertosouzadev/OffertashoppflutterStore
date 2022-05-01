@@ -13,6 +13,8 @@ import 'package:vendor/baseurl/baseurlg.dart' as baseUrl;
 import 'package:vendor/beanmodel/chatmodel/global.dart' as global;
 import 'package:vendor/beanmodel/revenue/topselling.dart';
 
+import '../../constants/images_constants.dart';
+
 class Chat {
   Chat(this.img, this.name, this.sold, this.price);
 
@@ -67,7 +69,13 @@ class _ChatListPageState extends State<ChatListPage> {
     String result;
     try {
       try {
-        List<QueryDocumentSnapshot> sd = (await FirebaseFirestore.instance.collectionGroup('store').where('storeId', isEqualTo: storeId).orderBy("lastMessageTime", descending: true).get()).docs.toList();
+        List<QueryDocumentSnapshot> sd = (await FirebaseFirestore.instance
+                .collectionGroup('store')
+                .where('storeId', isEqualTo: storeId)
+                .orderBy("lastMessageTime", descending: true)
+                .get())
+            .docs
+            .toList();
         sd.forEach((e) {
           setState(() {
             _stores.add(ChatStore.fromJson(e.data()));
@@ -137,15 +145,18 @@ class _ChatListPageState extends State<ChatListPage> {
                                                 chatId: _stores[index].chatId,
                                                 name: _stores[index].name,
                                                 storeId: _stores[index].storeId,
-                                                userFcmToken: _stores[index].userFcmToken,
+                                                userFcmToken:
+                                                    _stores[index].userFcmToken,
                                                 userId: _stores[index].userId,
                                               )));
                                 },
-                                child: buildChatListCard(context, _stores[index]));
+                                child:
+                                    buildChatListCard(context, _stores[index]));
                           })
                       : Center(
                           child: Padding(
-                            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height / 3),
                             child: Text('No chats found'),
                           ),
                         )
@@ -169,7 +180,8 @@ class _ChatListPageState extends State<ChatListPage> {
     );
   }
 
-  Container buildOrderCard(BuildContext context, TopSellingRevenueOrdCount orderCount) {
+  Container buildOrderCard(
+      BuildContext context, TopSellingRevenueOrdCount orderCount) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -192,8 +204,17 @@ class _ChatListPageState extends State<ChatListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.orders}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalOrders != null) ? '${orderCount.totalOrders}' : '', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.orders}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalOrders != null)
+                          ? '${orderCount.totalOrders}'
+                          : '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -201,8 +222,17 @@ class _ChatListPageState extends State<ChatListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.revenue}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalRevenue != null) ? '$apCurrency ${orderCount.totalRevenue}' : '$apCurrency 0.0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.revenue}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalRevenue != null)
+                          ? '$apCurrency ${orderCount.totalRevenue}'
+                          : '$apCurrency 0.0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -210,8 +240,17 @@ class _ChatListPageState extends State<ChatListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.pending}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.pendingOrders != null) ? '${orderCount.pendingOrders}' : '0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.pending}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.pendingOrders != null)
+                          ? '${orderCount.pendingOrders}'
+                          : '0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
           ],
         ),
@@ -335,7 +374,8 @@ class _ChatListPageState extends State<ChatListPage> {
                       ? CachedNetworkImage(
                           width: MediaQuery.of(context).size.width,
                           height: 230,
-                          imageUrl: baseUrl.imagebaseUrl + '${stores.userProfileImageUrl}',
+                          imageUrl: baseUrl.imagebaseUrl +
+                              '${stores.userProfileImageUrl}',
                           fit: BoxFit.fill,
                           placeholder: (context, url) => Align(
                             widthFactor: 50,
@@ -349,7 +389,7 @@ class _ChatListPageState extends State<ChatListPage> {
                             ),
                           ),
                           errorWidget: (context, url, error) => Image.asset(
-                            'assets/icon.png',
+                            ImageConstants.APP_LOGO,
                             fit: BoxFit.fill,
                           ),
                         )
@@ -366,22 +406,28 @@ class _ChatListPageState extends State<ChatListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RichText(
-                        text: TextSpan(style: Theme.of(context).textTheme.subtitle1, children: <TextSpan>[
-                      TextSpan(text: '${stores.name}'),
-                      //TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
-                    ])),
+                        text: TextSpan(
+                            style: Theme.of(context).textTheme.subtitle1,
+                            children: <TextSpan>[
+                          TextSpan(text: '${stores.name}'),
+                          //TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
+                        ])),
                     stores.lastMessage != global.imageUploadMessageKey
-                        ? Text('${stores.lastMessage}', style: Theme.of(context).textTheme.subtitle2)
+                        ? Text('${stores.lastMessage}',
+                            style: Theme.of(context).textTheme.subtitle2)
                         : Row(
                             children: [
                               Icon(
                                 Icons.image,
                                 size: 18,
-                                color: Theme.of(context).textTheme.subtitle2.color,
+                                color:
+                                    Theme.of(context).textTheme.subtitle2.color,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 3),
-                                child: Text('Photo', style: Theme.of(context).textTheme.subtitle2),
+                                child: Text('Photo',
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2),
                               ),
                             ],
                           ),

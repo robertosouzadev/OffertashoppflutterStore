@@ -9,6 +9,7 @@ import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/Theme/colors.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/aboutus.dart';
+import 'package:vendor/constants/images_constants.dart';
 
 class TNCPage extends StatefulWidget {
   @override
@@ -63,13 +64,16 @@ class TNCPageState extends State<TNCPage> {
           physics: BouncingScrollPhysics(),
           children: [
             Image.asset(
-              'assets/icon.png',
+              ImageConstants.APP_LOGO,
               scale: 2.5,
               height: 280,
             ),
             Text(
               (title != null) ? '$title' : '',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.grey[400]),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Colors.grey[400]),
             ),
             SizedBox(
               height: 20,

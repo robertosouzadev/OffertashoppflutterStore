@@ -9,6 +9,8 @@ import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/appinfomodel.dart';
 import 'package:vendor/beanmodel/orderbean/todayorderbean.dart';
 
+import '../../constants/images_constants.dart';
+
 class TomorrowOrder extends StatefulWidget {
   @override
   _TomorrowOrderState createState() => _TomorrowOrderState();
@@ -83,12 +85,14 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
       isLoading = true;
       apCurrency = prefs.getString('app_currency');
     });
-    http.post(storenextdayOrdersUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storenextdayOrdersUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       print(value.body);
       if (value.statusCode == 200) {
         var jsD = jsonDecode(value.body) as List;
         if ('${jsD[0]['order_details']}'.toUpperCase() != 'NO ORDERS FOUND') {
-          newOrders = List.from(jsD.map((e) => TodayOrderMain.fromJson(e)).toList());
+          newOrders =
+              List.from(jsD.map((e) => TodayOrderMain.fromJson(e)).toList());
         }
       }
       setState(() {
@@ -142,36 +146,45 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
   //               : Theme.of(context).scaffoldBackgroundColor,
   //         ));
 
-  GestureDetector buildCompleteCard(BuildContext context, TodayOrderMain mainP) {
+  GestureDetector buildCompleteCard(
+      BuildContext context, TodayOrderMain mainP) {
     //var locale = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => OrderInfo(mainP))).then((value) {
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OrderInfo(mainP)))
+            .then((value) {
           if (value != null && value) {
             getOrderList();
           }
         });
       },
       child: Card(
-        shape: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+        shape: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none),
         margin: EdgeInsets.only(left: 14, right: 14, top: 14),
         color: Colors.white,
         elevation: 1,
         child: Column(
           children: [
             buildItem(context, mainP),
-            buildOrderInfoRow(context, '$apCurrency ${mainP.order_price}', '${mainP.payment_mode}', '${mainP.order_status}'),
+            buildOrderInfoRow(context, '$apCurrency ${mainP.order_price}',
+                '${mainP.payment_mode}', '${mainP.order_status}'),
           ],
         ),
       ),
     );
   }
 
-  Container buildOrderInfoRow(BuildContext context, String price, String prodID, String orderStatus, {double borderRadius = 8}) {
+  Container buildOrderInfoRow(
+      BuildContext context, String price, String prodID, String orderStatus,
+      {double borderRadius = 8}) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
+        borderRadius:
+            BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
         color: Colors.grey[100],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 11.0, vertical: 12),
@@ -183,7 +196,8 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
           // Spacer(),
           // buildGreyColumn(context, 'Qty', '1'),
           Spacer(),
-          buildGreyColumn(context, locale.orderStatus, orderStatus, text2Color: Theme.of(context).primaryColor),
+          buildGreyColumn(context, locale.orderStatus, orderStatus,
+              text2Color: Theme.of(context).primaryColor),
         ],
       ),
     );
@@ -198,7 +212,9 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset('assets/icon.png', height: 70)),
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(ImageConstants.APP_LOGO, height: 70)),
               SizedBox(width: 15),
               Expanded(
                 child: Column(
@@ -220,10 +236,19 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
                     Text(
                       mainP.user_address,
                       maxLines: 2,
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 12),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(fontSize: 12),
                     ),
                     SizedBox(height: 16),
-                    Text(locale.orderedOn + ' ${mainP.order_details[0].order_date}', style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 10.5)),
+                    Text(
+                        locale.orderedOn +
+                            ' ${mainP.order_details[0].order_date}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            .copyWith(fontSize: 10.5)),
                   ],
                 ),
               ),
@@ -236,7 +261,10 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
             child: Text(
               locale.orderID + ' #${mainP.cart_id}',
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 10.5),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2
+                  .copyWith(fontSize: 10.5),
             ),
           ),
         ],
@@ -264,15 +292,23 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
   //   );
   // }
 
-  Column buildGreyColumn(BuildContext context, String text1, String text2, {Color text2Color = Colors.black}) {
+  Column buildGreyColumn(BuildContext context, String text1, String text2,
+      {Color text2Color = Colors.black}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(text1, style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 11)),
+        Text(text1,
+            style:
+                Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 11)),
         SizedBox(height: 8),
         LimitedBox(
           maxWidth: 100,
-          child: Text(text2, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: text2Color)),
+          child: Text(text2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: text2Color)),
         ),
       ],
     );

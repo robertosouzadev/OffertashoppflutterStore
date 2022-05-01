@@ -21,6 +21,7 @@ import 'package:vendor/beanmodel/citybean/citybean.dart';
 import 'package:vendor/beanmodel/idList.dart';
 import 'package:vendor/beanmodel/mapsection/latlng.dart';
 import 'package:vendor/beanmodel/registrationmodel/registrationmodel.dart';
+import 'package:vendor/constants/images_constants.dart';
 
 class SignUp extends StatefulWidget {
   // final VoidCallback onVerificationDone;
@@ -238,7 +239,8 @@ class _SignUpState extends State<SignUp> {
         setState(() {
           _image = null;
         });
-        Toast.show('upload image less then 1000 kb', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+        Toast.show('upload image less then 1000 kb', context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
       } else {
         setState(() {
           _image = result;
@@ -305,7 +307,8 @@ class _SignUpState extends State<SignUp> {
         setState(() {
           idPhoto = null;
         });
-        Toast.show('upload image less then 1000 kb', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+        Toast.show('upload image less then 1000 kb', context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
       } else {
         setState(() {
           idPhoto = result;
@@ -382,7 +385,8 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     if (!enteredFirst) {
-      final Map<String, Object> rcvdData = ModalRoute.of(context).settings.arguments;
+      final Map<String, Object> rcvdData =
+          ModalRoute.of(context).settings.arguments;
       enteredFirst = true;
       appinfo = rcvdData['appinfo'];
       numberLimit = int.parse('${appinfo.phoneNumberLength}');
@@ -414,28 +418,36 @@ class _SignUpState extends State<SignUp> {
                       onTap: () {
                         _showPicker(context);
                       },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 90,
-                        decoration: BoxDecoration(border: Border.all(color: kMainColor), borderRadius: BorderRadius.circular(5.0)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image(
-                              image: (_image != null) ? FileImage(_image) : AssetImage('assets/icon.png'),
-                              height: 80,
-                              width: 80,
+                      child: Wrap(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 90,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: kMainColor),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Center(
+                              child: ListTile(
+                                leading: Image(
+                                  image: (_image != null)
+                                      ? FileImage(_image)
+                                      : AssetImage(ImageConstants.APP_LOGO),
+                                  height: 80,
+                                  width: 80,
+                                ),
+                                title: Text(locale.uploadpictext,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .copyWith(
+                                            color: kMainTextColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                    maxLines: 2),
+                              ),
                             ),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            Text(
-                              locale.uploadpictext,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: kMainTextColor, fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -456,7 +468,8 @@ class _SignUpState extends State<SignUp> {
                     controller: phoneNumberC,
                     keyboardType: TextInputType.phone,
                     maxLength: int.parse('${appinfo.phoneNumberLength}'),
-                    contentPading: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                    contentPading:
+                        EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                     preFixIcon: Container(
                       alignment: Alignment.center,
                       width: 40,
@@ -466,7 +479,8 @@ class _SignUpState extends State<SignUp> {
                           Text(
                             '+${appinfo.countryCode}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: kMainTextColor, fontSize: 18.3),
+                            style: TextStyle(
+                                color: kMainTextColor, fontSize: 18.3),
                           ),
                           Container(
                             width: 2,
@@ -561,10 +575,14 @@ class _SignUpState extends State<SignUp> {
                     controller: passwordC,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 1),
                     child: Text(
                       locale.selectycity1,
-                      style: Theme.of(context).textTheme.headline6.copyWith(color: kMainTextColor, fontWeight: FontWeight.bold, fontSize: 21.7),
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                          color: kMainTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 21.7),
                     ),
                   ),
                   Container(
@@ -582,7 +600,8 @@ class _SignUpState extends State<SignUp> {
                       items: cityList.map((value) {
                         return DropdownMenuItem<CityDataBean>(
                           value: value,
-                          child: Text(value.city_name, overflow: TextOverflow.clip),
+                          child: Text(value.city_name,
+                              overflow: TextOverflow.clip),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -607,7 +626,8 @@ class _SignUpState extends State<SignUp> {
                     controller: addressC,
                     readOnly: true,
                     onTap: () {
-                      Navigator.pushNamed(context, PageRoutes.locSearch).then((value) {
+                      Navigator.pushNamed(context, PageRoutes.locSearch)
+                          .then((value) {
                         if (value != null) {
                           BackLatLng back = value;
                           setState(() {
@@ -620,10 +640,14 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 1),
                     child: Text(
                       'Select Id',
-                      style: Theme.of(context).textTheme.headline6.copyWith(color: kMainTextColor, fontWeight: FontWeight.bold, fontSize: 21.7),
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                          color: kMainTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 21.7),
                     ),
                   ),
                   Container(
@@ -666,11 +690,17 @@ class _SignUpState extends State<SignUp> {
                   idValue != null
                       ? Container(
                           margin: EdgeInsets.all(08),
-                          decoration: BoxDecoration(border: Border.all(width: 1, color: Theme.of(context).primaryColor), borderRadius: BorderRadius.all(Radius.circular(10))),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColor),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                           width: MediaQuery.of(context).size.width,
                           height: 250,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 08, right: 08, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 08, right: 08, bottom: 10),
                             child: GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
@@ -689,7 +719,9 @@ class _SignUpState extends State<SignUp> {
                                               child: Text(
                                             'Tap to add ${idValue.name} photo',
                                             //'Tap to add third image',
-                                            style: Theme.of(context).inputDecorationTheme.labelStyle,
+                                            style: Theme.of(context)
+                                                .inputDecorationTheme
+                                                .labelStyle,
                                           )),
                                         )
                                       : SizedBox(
@@ -711,7 +743,10 @@ class _SignUpState extends State<SignUp> {
           showDialogBox
               ? Container(
                   height: 50,
-                  child: Center(widthFactor: 50, heightFactor: 40, child: CircularProgressIndicator(strokeWidth: 3)),
+                  child: Center(
+                      widthFactor: 50,
+                      heightFactor: 40,
+                      child: CircularProgressIndicator(strokeWidth: 3)),
                 )
               : CustomButton(onTap: () {
                   if (!showDialogBox) {
@@ -720,9 +755,12 @@ class _SignUpState extends State<SignUp> {
                     });
                     // int numLength = (mobileNumber!=null && mobileNumber.toString().length>0)?numberLimit:10;
                     if (sellerNameC.text != null) {
-                      if (emailAddressC.text != null && emailValidator(emailAddressC.text)) {
-                        if (passwordC.text != null && passwordC.text.length > 6) {
-                          if (phoneNumberC.text != null && phoneNumberC.text.length == numberLimit) {
+                      if (emailAddressC.text != null &&
+                          emailValidator(emailAddressC.text)) {
+                        if (passwordC.text != null &&
+                            passwordC.text.length > 6) {
+                          if (phoneNumberC.text != null &&
+                              phoneNumberC.text.length == numberLimit) {
                             if (storeNameC.text != null) {
                               if (adminShareC.text != null) {
                                 if (deliveryRangeC.text != null) {
@@ -731,81 +769,131 @@ class _SignUpState extends State<SignUp> {
                                       if (idNumberC.text != '') {
                                         if (_image != null) {
                                           if (idPhoto != null) {
-                                            hitSignUpUrl(sellerNameC.text, storeNameC.text, phoneNumberC.text, emailAddressC.text, passwordC.text, cityData.city_name, adminShareC.text, deliveryRangeC.text, addressC.text, context, idValue.name, idNumberC.text);
+                                            hitSignUpUrl(
+                                                sellerNameC.text,
+                                                storeNameC.text,
+                                                phoneNumberC.text,
+                                                emailAddressC.text,
+                                                passwordC.text,
+                                                cityData.city_name,
+                                                adminShareC.text,
+                                                deliveryRangeC.text,
+                                                addressC.text,
+                                                context,
+                                                idValue.name,
+                                                idNumberC.text);
                                           } else {
                                             setState(() {
                                               showDialogBox = false;
                                             });
-                                            Toast.show('upload id photo', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                            Toast.show(
+                                                'upload id photo', context,
+                                                gravity: Toast.CENTER,
+                                                duration: Toast.LENGTH_SHORT);
                                           }
                                         } else {
                                           setState(() {
                                             showDialogBox = false;
                                           });
-                                          Toast.show('upload your trade license', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                          Toast.show(
+                                              'upload your trade license',
+                                              context,
+                                              gravity: Toast.CENTER,
+                                              duration: Toast.LENGTH_SHORT);
                                         }
                                       } else {
                                         setState(() {
                                           showDialogBox = false;
                                         });
-                                        Toast.show('incorect id number', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                        Toast.show(
+                                            'incorect id number', context,
+                                            gravity: Toast.CENTER,
+                                            duration: Toast.LENGTH_SHORT);
                                       }
                                     } else {
                                       setState(() {
                                         showDialogBox = false;
                                       });
-                                      Toast.show('incorectId', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                      Toast.show('incorectId', context,
+                                          gravity: Toast.CENTER,
+                                          duration: Toast.LENGTH_SHORT);
                                     }
                                   } else {
                                     setState(() {
                                       showDialogBox = false;
                                     });
-                                    Toast.show('${locale.incorectUserName}$numberLimit', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                    Toast.show(
+                                        '${locale.incorectUserName}$numberLimit',
+                                        context,
+                                        gravity: Toast.CENTER,
+                                        duration: Toast.LENGTH_SHORT);
                                   }
                                 } else {
                                   setState(() {
                                     showDialogBox = false;
                                   });
-                                  Toast.show('${locale.incorectUserName}$numberLimit', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                  Toast.show(
+                                      '${locale.incorectUserName}$numberLimit',
+                                      context,
+                                      gravity: Toast.CENTER,
+                                      duration: Toast.LENGTH_SHORT);
                                 }
                               } else {
                                 setState(() {
                                   showDialogBox = false;
                                 });
-                                Toast.show('${locale.incorectUserName}$numberLimit', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                                Toast.show(
+                                    '${locale.incorectUserName}$numberLimit',
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_SHORT);
                               }
                             } else {
                               setState(() {
                                 showDialogBox = false;
                               });
-                              Toast.show('${locale.incorectUserName}$numberLimit', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                              Toast.show(
+                                  '${locale.incorectUserName}$numberLimit',
+                                  context,
+                                  gravity: Toast.CENTER,
+                                  duration: Toast.LENGTH_SHORT);
                             }
                           } else {
                             setState(() {
                               showDialogBox = false;
                             });
-                            Toast.show('${locale.incorectMobileNumber}$numberLimit', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                            Toast.show(
+                                '${locale.incorectMobileNumber}$numberLimit',
+                                context,
+                                gravity: Toast.CENTER,
+                                duration: Toast.LENGTH_SHORT);
                           }
                         } else {
                           setState(() {
                             showDialogBox = false;
                           });
-                          Toast.show(locale.incorectPassword, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                          Toast.show(locale.incorectPassword, context,
+                              gravity: Toast.CENTER,
+                              duration: Toast.LENGTH_SHORT);
                         }
                       } else {
                         setState(() {
                           showDialogBox = false;
                         });
-                        Toast.show(locale.incorectEmail, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                        Toast.show(locale.incorectEmail, context,
+                            gravity: Toast.CENTER,
+                            duration: Toast.LENGTH_SHORT);
                       }
                     } else {
                       setState(() {
                         showDialogBox = false;
                       });
-                      Toast.show(locale.incorectUserName, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                      Toast.show(locale.incorectUserName, context,
+                          gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
                     }
                   } else {
-                    Toast.show('Already in progress.', context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                    Toast.show('Already in progress.', context,
+                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
                   }
                 })
         ],
@@ -814,7 +902,9 @@ class _SignUpState extends State<SignUp> {
   }
 
   bool emailValidator(email) {
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 
   void hitSignUpUrl(
@@ -831,7 +921,27 @@ class _SignUpState extends State<SignUp> {
     String idName,
     String idNumber,
   ) async {
-    print(storename + '\n' + sellerName + '\n' + storephone + '\n' + cityid + '\n' + storeemail + '\n' + deliveryrange + '\n' + password + '\n' + address + '\n' + lat.toString() + '\n' + lng.toString() + '\n' + adminshare);
+    print(storename +
+        '\n' +
+        sellerName +
+        '\n' +
+        storephone +
+        '\n' +
+        cityid +
+        '\n' +
+        storeemail +
+        '\n' +
+        deliveryrange +
+        '\n' +
+        password +
+        '\n' +
+        address +
+        '\n' +
+        lat.toString() +
+        '\n' +
+        lng.toString() +
+        '\n' +
+        adminshare);
     var requestMulti = http.MultipartRequest('POST', registrationStoreUri);
     requestMulti.fields["store_name"] = '$storename';
     requestMulti.fields["emp_name"] = '$sellerName';
@@ -848,9 +958,13 @@ class _SignUpState extends State<SignUp> {
     requestMulti.fields["id_numb"] = '$idNumber';
     if (_image != null) {
       String fid = _image.path.split('/').last;
-      requestMulti.files.add(await http.MultipartFile.fromPath('profile', _image.path, filename: fid));
+      requestMulti.files.add(await http.MultipartFile.fromPath(
+          'profile', _image.path,
+          filename: fid));
       String fid2 = idPhoto.path.split('/').last;
-      requestMulti.files.add(await http.MultipartFile.fromPath('id_img', idPhoto.path, filename: fid2));
+      requestMulti.files.add(await http.MultipartFile.fromPath(
+          'id_img', idPhoto.path,
+          filename: fid2));
       requestMulti.send().then((values) {
         values.stream.toBytes().then((value) {
           var responseString = String.fromCharCodes(value);
@@ -861,7 +975,8 @@ class _SignUpState extends State<SignUp> {
           if ('${signInData.status}' == '1') {
             Navigator.of(context).pop();
           }
-          Toast.show(signInData.message, context, gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+          Toast.show(signInData.message, context,
+              gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
           setState(() {
             showDialogBox = false;
           });

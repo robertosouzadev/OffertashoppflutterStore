@@ -12,6 +12,8 @@ import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/Theme/colors.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 
+import '../../constants/images_constants.dart';
+
 class ContactUsPage extends StatefulWidget {
   @override
   _ContactUsPageState createState() => _ContactUsPageState();
@@ -72,7 +74,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.asset(
-                'assets/icon.png',
+                ImageConstants.APP_LOGO,
                 scale: 2.5,
                 height: 280,
               ),
@@ -84,7 +86,10 @@ class _ContactUsPageState extends State<ContactUsPage> {
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
                         locale.callBackReq2,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 16),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontSize: 16),
                       ),
                     ),
                     ClipRRect(
@@ -93,8 +98,10 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         style: ButtonStyle(
                           shadowColor: MaterialStateProperty.all(kHintColor),
                           overlayColor: MaterialStateProperty.all(kHintColor),
-                          backgroundColor: MaterialStateProperty.all(kHintColor),
-                          foregroundColor: MaterialStateProperty.all(kHintColor),
+                          backgroundColor:
+                              MaterialStateProperty.all(kHintColor),
+                          foregroundColor:
+                              MaterialStateProperty.all(kHintColor),
                         ),
                         onPressed: () {
                           if (!isLoading) {
@@ -114,28 +121,55 @@ class _ContactUsPageState extends State<ContactUsPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
                 child: Text(
                   locale.or,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 17),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(fontSize: 17),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
                 child: Text(
                   locale.letUsKnowYourFeedbackQueriesIssueRegardingAppFeatures,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 17),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(fontSize: 17),
                 ),
               ),
               Divider(
                 thickness: 3.5,
                 color: Colors.transparent,
               ),
-              EntryField(labelFontSize: 16, controller: nameC, labelFontWeight: FontWeight.w400, label: locale.fullName),
-              EntryField(controller: numberC, labelFontSize: 16, maxLength: numberlimit, readOnly: true, labelFontWeight: FontWeight.w400, label: locale.phoneNumber),
-              EntryField(hintStyle: Theme.of(context).textTheme.subtitle1.copyWith(color: kHintColor, fontSize: 18.3, fontWeight: FontWeight.w400), hint: locale.enterYourMessage, controller: messageC, labelFontSize: 16, labelFontWeight: FontWeight.w400, label: locale.yourFeedback),
+              EntryField(
+                  labelFontSize: 16,
+                  controller: nameC,
+                  labelFontWeight: FontWeight.w400,
+                  label: locale.fullName),
+              EntryField(
+                  controller: numberC,
+                  labelFontSize: 16,
+                  maxLength: numberlimit,
+                  readOnly: true,
+                  labelFontWeight: FontWeight.w400,
+                  label: locale.phoneNumber),
+              EntryField(
+                  hintStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                      color: kHintColor,
+                      fontSize: 18.3,
+                      fontWeight: FontWeight.w400),
+                  hint: locale.enterYourMessage,
+                  controller: messageC,
+                  labelFontSize: 16,
+                  labelFontWeight: FontWeight.w400,
+                  label: locale.yourFeedback),
               Divider(
                 thickness: 3.5,
                 color: Colors.transparent,
@@ -184,7 +218,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
       if (value.statusCode == 200) {
         var jsData = jsonDecode(value.body);
         if ('${jsData['status']}' == '1') {
-          Toast.show(jsData['message'], context, duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+          Toast.show(jsData['message'], context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
         }
       }
       setState(() {
@@ -205,7 +240,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
       if (value.statusCode == 200) {
         var jsData = jsonDecode(value.body);
         if ('${jsData['status']}' == '1') {
-          Toast.show(jsData['message'], context, duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+          Toast.show(jsData['message'], context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
         }
       }
       setState(() {

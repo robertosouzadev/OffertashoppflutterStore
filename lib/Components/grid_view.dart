@@ -7,14 +7,26 @@ import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/Theme/colors.dart';
 import 'package:vendor/beanmodel/productmodel/adminprodcut.dart';
 import 'package:vendor/beanmodel/productmodel/storeprodcut.dart';
+import 'package:vendor/constants/color.dart';
 
-GridView buildGridView(List<StoreProductData> listName, {bool favourites = false, void callBack(int index, String type), void update(StoreProductData pdData, String type, int pvid), void addVaraient(int pid), void updateStock(StoreProductData pdData, String type, int varientId)}) {
+import '../constants/images_constants.dart';
+
+GridView buildGridView(List<StoreProductData> listName,
+    {bool favourites = false,
+    void callBack(int index, String type),
+    void update(StoreProductData pdData, String type, int pvid),
+    void addVaraient(int pid),
+    void updateStock(StoreProductData pdData, String type, int varientId)}) {
   return GridView.builder(
       padding: EdgeInsets.all(20.0),
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: listName.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 16, mainAxisSpacing: 16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16),
       itemBuilder: (context, index) {
         return buildProductCard(context, listName[index],
             favourites: favourites,
@@ -31,15 +43,24 @@ GridView buildGridView(List<StoreProductData> listName, {bool favourites = false
       });
 }
 
-GridView buildGridAdminView(List<StoreProductM> listName, {bool favourites = false, void callBack(int index, String type), void update(StoreProductM pdData, String type, int pvid), void addVaraient(int pid)}) {
+GridView buildGridAdminView(List<StoreProductM> listName,
+    {bool favourites = false,
+    void callBack(int index, String type),
+    void update(StoreProductM pdData, String type, int pvid),
+    void addVaraient(int pid)}) {
   return GridView.builder(
       padding: EdgeInsets.all(20.0),
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: listName.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 16, mainAxisSpacing: 16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16),
       itemBuilder: (context, index) {
-        return buildProductAdminCard(context, listName[index], favourites: favourites, update: (pData, type, pid) {
+        return buildProductAdminCard(context, listName[index],
+            favourites: favourites, update: (pData, type, pid) {
           update(pData, type, pid);
         });
       });
@@ -51,7 +72,11 @@ GridView buildGridSHView() {
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: 10,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 16, mainAxisSpacing: 16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16),
       itemBuilder: (context, index) {
         return buildProductSHCard(context);
       });
@@ -111,7 +136,11 @@ Widget buildProductSHCard(BuildContext context) {
 }
 
 Widget buildProductCard(BuildContext context, StoreProductData productData,
-    {bool favourites = false, void callBack(int index, String type), void update(StoreProductData pdData, String type, int varientId), void addVaraient(int pid), void updateStock(StoreProductData pdData, String type, int varientId)}) {
+    {bool favourites = false,
+    void callBack(int index, String type),
+    void update(StoreProductData pdData, String type, int varientId),
+    void addVaraient(int pid),
+    void updateStock(StoreProductData pdData, String type, int varientId)}) {
   var locale = AppLocalizations.of(context);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,18 +165,29 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                 child: CircularProgressIndicator(),
               ),
             ),
-            errorWidget: (context, url, error) => Image.asset('assets/icon.png'),
+            errorWidget: (context, url, error) =>
+                Image.asset(ImageConstants.APP_LOGO),
           ),
         ),
       ),
-      Visibility(visible: (productData.varients.length > 0), child: SizedBox(height: 4)),
-      productData.varients.length > 0 ? Text('${productData.varients[0].quantity} ${productData.varients[0].unit}', style: TextStyle(color: Colors.grey[500], fontSize: 13)) : SizedBox(),
+      Visibility(
+          visible: (productData.varients.length > 0),
+          child: SizedBox(height: 4)),
+      productData.varients.length > 0
+          ? Text(
+              '${productData.varients[0].quantity} ${productData.varients[0].unit}',
+              style: TextStyle(color: Colors.grey[500], fontSize: 13))
+          : SizedBox(),
       // Visibility(visible: (productData.varients.length > 0), child: Text('${productData.varients[0].quantity} ${productData.varients[0].unit}', style: TextStyle(color: Colors.grey[500], fontSize: 13))),
       SizedBox(height: 4),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(productData.productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w500))),
+          Expanded(
+              child: Text(productData.productName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.w500))),
           GestureDetector(
               onTap: () {
                 // Get.to(CategoryBasedShowPage(),arguments: {
@@ -171,11 +211,13 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.all(10),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       locale.product,
-                                      style: TextStyle(color: kMainColor, fontSize: 18),
+                                      style: TextStyle(
+                                          color: kMainColor, fontSize: 18),
                                     ),
                                   ],
                                 ),
@@ -186,15 +228,18 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pop();
-                                  update(productData, 'product', productData.productId);
+                                  update(productData, 'product',
+                                      productData.productId);
                                 },
                                 behavior: HitTestBehavior.opaque,
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: kMainColor)),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         locale.updateproduct,
@@ -213,15 +258,18 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pop();
-                                    updateStock(productData, 'product', productData.productId);
+                                    updateStock(productData, 'product',
+                                        productData.productId);
                                   },
                                   behavior: HitTestBehavior.opaque,
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: kMainColor)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           locale.updatestock,
@@ -239,19 +287,25 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pop();
-                                  callBack(int.parse('${productData.productId}'), 'product');
+                                  callBack(
+                                      int.parse('${productData.productId}'),
+                                      'product');
                                 },
                                 behavior: HitTestBehavior.opaque,
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: kMainColor)),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '${locale.delete} ${locale.product}',
-                                        style: TextStyle(color: Colors.redAccent, fontSize: 18),
+                                        style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 18),
                                       ),
                                       Icon(
                                         Icons.delete,
@@ -263,18 +317,21 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                               ),
                             ),
                             Visibility(
-                              visible: (productData.varients != null && productData.varients.length > 0),
+                              visible: (productData.varients != null &&
+                                  productData.varients.length > 0),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(10),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         locale.variant,
-                                        style: TextStyle(color: kMainColor, fontSize: 18),
+                                        style: TextStyle(
+                                            color: kMainColor, fontSize: 18),
                                       ),
                                     ],
                                   ),
@@ -282,7 +339,8 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                               ),
                             ),
                             Visibility(
-                              visible: (productData.varients != null && productData.varients.length > 0),
+                              visible: (productData.varients != null &&
+                                  productData.varients.length > 0),
                               child: ListView.builder(
                                   itemCount: productData.varients.length,
                                   shrinkWrap: true,
@@ -291,11 +349,15 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                        decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: kMainColor)),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               '${productData.varients[index].quantity} ${productData.varients[index].unit}',
@@ -306,15 +368,21 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                                 GestureDetector(
                                                   onTap: () {
                                                     Navigator.of(context).pop();
-                                                    update(productData, 'variant', int.parse('${productData.varients[index].varientId}'));
+                                                    update(
+                                                        productData,
+                                                        'variant',
+                                                        int.parse(
+                                                            '${productData.varients[index].varientId}'));
                                                   },
-                                                  behavior: HitTestBehavior.opaque,
+                                                  behavior:
+                                                      HitTestBehavior.opaque,
                                                   child: Column(
                                                     children: [
                                                       Icon(Icons.open_in_new),
                                                       Text(
                                                         locale.update,
-                                                        style: TextStyle(fontSize: 16),
+                                                        style: TextStyle(
+                                                            fontSize: 16),
                                                       ),
                                                     ],
                                                   ),
@@ -325,9 +393,13 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                                 GestureDetector(
                                                   onTap: () {
                                                     Navigator.of(context).pop();
-                                                    callBack(int.parse('${productData.varients[index].varientId}'), 'variant');
+                                                    callBack(
+                                                        int.parse(
+                                                            '${productData.varients[index].varientId}'),
+                                                        'variant');
                                                   },
-                                                  behavior: HitTestBehavior.opaque,
+                                                  behavior:
+                                                      HitTestBehavior.opaque,
                                                   child: Column(
                                                     children: [
                                                       Icon(
@@ -336,7 +408,10 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                                       ),
                                                       Text(
                                                         locale.delete,
-                                                        style: TextStyle(fontSize: 16, color: Colors.redAccent),
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors
+                                                                .redAccent),
                                                       ),
                                                     ],
                                                   ),
@@ -350,17 +425,23 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
                                   }),
                             ),
                             ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(50)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  shadowColor: MaterialStateProperty.all(kMainColor),
-                                  overlayColor: MaterialStateProperty.all(kMainColor),
-                                  backgroundColor: MaterialStateProperty.all(kMainColor),
-                                  foregroundColor: MaterialStateProperty.all(kMainColor),
+                                  shadowColor:
+                                      MaterialStateProperty.all(kMainColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all(kMainColor),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(kMainColor),
+                                  foregroundColor:
+                                      MaterialStateProperty.all(kMainColor),
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  addVaraient(int.parse('${productData.productId}'));
+                                  addVaraient(
+                                      int.parse('${productData.productId}'));
                                 },
                                 child: Text(
                                   locale.addVarient,
@@ -397,7 +478,11 @@ Widget buildProductCard(BuildContext context, StoreProductData productData,
   );
 }
 
-Widget buildProductAdminCard(BuildContext context, StoreProductM productData, {bool favourites = false, void callBack(int index, String type), void update(StoreProductM pdData, String type, int varientId), void addVaraient(int pid)}) {
+Widget buildProductAdminCard(BuildContext context, StoreProductM productData,
+    {bool favourites = false,
+    void callBack(int index, String type),
+    void update(StoreProductM pdData, String type, int varientId),
+    void addVaraient(int pid)}) {
   var locale = AppLocalizations.of(context);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -422,17 +507,21 @@ Widget buildProductAdminCard(BuildContext context, StoreProductM productData, {b
                 child: CircularProgressIndicator(),
               ),
             ),
-            errorWidget: (context, url, error) => Image.asset('assets/icon.png'),
+            errorWidget: (context, url, error) =>
+                Image.asset(ImageConstants.APP_LOGO),
           ),
         ),
       ),
       SizedBox(height: 4),
-      Text('${productData.quantity} ${productData.unit}', style: TextStyle(color: Colors.grey[500], fontSize: 13)),
+      Text('${productData.quantity} ${productData.unit}',
+          style: TextStyle(color: Colors.grey[500], fontSize: 13)),
       SizedBox(height: 4),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(productData.productName, maxLines: 1, style: TextStyle(fontWeight: FontWeight.w500))),
+          Expanded(
+              child: Text(productData.productName,
+                  maxLines: 1, style: TextStyle(fontWeight: FontWeight.w500))),
           Visibility(
             visible: ('${productData.approved}' == '0'),
             child: GestureDetector(
@@ -454,11 +543,13 @@ Widget buildProductAdminCard(BuildContext context, StoreProductM productData, {b
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(10),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         locale.product,
-                                        style: TextStyle(color: kMainColor, fontSize: 18),
+                                        style: TextStyle(
+                                            color: kMainColor, fontSize: 18),
                                       ),
                                     ],
                                   ),
@@ -469,15 +560,18 @@ Widget buildProductAdminCard(BuildContext context, StoreProductM productData, {b
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pop();
-                                    update(productData, 'product', productData.productId);
+                                    update(productData, 'product',
+                                        productData.productId);
                                   },
                                   behavior: HitTestBehavior.opaque,
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: kMainColor)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           locale.updateproduct,
@@ -494,23 +588,30 @@ Widget buildProductAdminCard(BuildContext context, StoreProductM productData, {b
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).pop();
-                                    callBack(int.parse('${productData.productId}'), 'product');
+                                    callBack(
+                                        int.parse('${productData.productId}'),
+                                        'product');
                                   },
                                   behavior: HitTestBehavior.opaque,
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(border: Border.all(color: kMainColor)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: kMainColor)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '${locale.delete} ${locale.product}',
-                                          style: TextStyle(color: Colors.redAccent, fontSize: 18),
+                                          style: TextStyle(
+                                              color:
+                                                  ColorConstants.secondaryColor,
+                                              fontSize: 18),
                                         ),
                                         Icon(
                                           Icons.delete,
-                                          color: Colors.redAccent,
+                                          color: ColorConstants.secondaryColor,
                                         ),
                                       ],
                                     ),

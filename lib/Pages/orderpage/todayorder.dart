@@ -18,13 +18,16 @@ import 'package:vendor/beanmodel/appinfomodel.dart';
 import 'package:vendor/beanmodel/orderbean/todayorderbean.dart';
 import 'package:vendor/beanmodel/util/invoice.dart';
 
+import '../../constants/images_constants.dart';
+
 class TodayOrder extends StatefulWidget {
   @override
   _TodayOrderState createState() => _TodayOrderState();
 }
 
 class _TodayOrderState extends State<TodayOrder> {
-  BluetoothP.PrinterBluetoothManager printerManager = BluetoothP.PrinterBluetoothManager();
+  BluetoothP.PrinterBluetoothManager printerManager =
+      BluetoothP.PrinterBluetoothManager();
   List<BluetoothP.PrinterBluetooth> _deviceList = [];
   BluetoothManager bluetoothManager = BluetoothManager.instance;
   BluetoothP.PrinterBluetooth _device;
@@ -107,12 +110,14 @@ class _TodayOrderState extends State<TodayOrder> {
       isLoading = true;
       apCurrency = prefs.getString('app_currency');
     });
-    http.post(storetodayOrdersUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storetodayOrdersUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       print(value.body);
       if (value.statusCode == 200) {
         var jsD = jsonDecode(value.body) as List;
         if ('${jsD[0]['order_details']}'.toUpperCase() != 'NO ORDERS FOUND') {
-          newOrders = List.from(jsD.map((e) => TodayOrderMain.fromJson(e)).toList());
+          newOrders =
+              List.from(jsD.map((e) => TodayOrderMain.fromJson(e)).toList());
         }
       }
       setState(() {
@@ -161,33 +166,42 @@ class _TodayOrderState extends State<TodayOrder> {
     );
   }
 
-  CircleAvatar buildStatusIcon(IconData icon, {bool disabled = false}) => CircleAvatar(
-      backgroundColor: !disabled ? Color(0xff222e3e) : Colors.grey[300],
-      child: Icon(
-        icon,
-        size: 20,
-        color: !disabled ? Theme.of(context).primaryColor : Theme.of(context).scaffoldBackgroundColor,
-      ));
+  CircleAvatar buildStatusIcon(IconData icon, {bool disabled = false}) =>
+      CircleAvatar(
+          backgroundColor: !disabled ? Color(0xff222e3e) : Colors.grey[300],
+          child: Icon(
+            icon,
+            size: 20,
+            color: !disabled
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).scaffoldBackgroundColor,
+          ));
 
-  GestureDetector buildCompleteCard(BuildContext context, TodayOrderMain mainP) {
+  GestureDetector buildCompleteCard(
+      BuildContext context, TodayOrderMain mainP) {
     var locale = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => OrderInfo(mainP))).then((value) {
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OrderInfo(mainP)))
+            .then((value) {
           if (value != null && value) {
             getOrderList();
           }
         });
       },
       child: Card(
-        shape: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+        shape: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none),
         margin: EdgeInsets.only(left: 14, right: 14, top: 14),
         color: Colors.white,
         elevation: 1,
         child: Column(
           children: [
             buildItem(context, mainP),
-            buildOrderInfoRow(context, '$apCurrency ${mainP.order_price}', '${mainP.payment_mode}', '${mainP.order_status}'),
+            buildOrderInfoRow(context, '$apCurrency ${mainP.order_price}',
+                '${mainP.payment_mode}', '${mainP.order_status}'),
             buildPrintRow(context, locale, cartId: '${mainP.cart_id}'),
           ],
         ),
@@ -195,11 +209,14 @@ class _TodayOrderState extends State<TodayOrder> {
     );
   }
 
-  Container buildOrderInfoRow(BuildContext context, String price, String prodID, String orderStatus, {double borderRadius = 8}) {
+  Container buildOrderInfoRow(
+      BuildContext context, String price, String prodID, String orderStatus,
+      {double borderRadius = 8}) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
+        borderRadius:
+            BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
         color: Colors.grey[100],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 11.0, vertical: 12),
@@ -211,17 +228,20 @@ class _TodayOrderState extends State<TodayOrder> {
           // Spacer(),
           // buildGreyColumn(context, 'Qty', '1'),
           Spacer(),
-          buildGreyColumn(context, locale.orderStatus, orderStatus, text2Color: Theme.of(context).primaryColor),
+          buildGreyColumn(context, locale.orderStatus, orderStatus,
+              text2Color: Theme.of(context).primaryColor),
         ],
       ),
     );
   }
 
-  Container buildPrintRow(BuildContext context, AppLocalizations locale, {double borderRadius = 8, dynamic cartId}) {
+  Container buildPrintRow(BuildContext context, AppLocalizations locale,
+      {double borderRadius = 8, dynamic cartId}) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
+        borderRadius:
+            BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
         color: Colors.grey[100],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 11.0, vertical: 12),
@@ -248,16 +268,21 @@ class _TodayOrderState extends State<TodayOrder> {
                             shrinkWrap: true,
                             itemCount: _deviceList.length,
                             itemBuilder: (cntxt, index) {
-                              return buildBluetoothCard(contextd, _deviceList[index], locale);
+                              return buildBluetoothCard(
+                                  contextd, _deviceList[index], locale);
                             })
                         : SizedBox(),
                     actions: <Widget>[
                       ElevatedButton(
                         style: ButtonStyle(
-                          shadowColor: MaterialStateProperty.all(Colors.transparent),
-                          overlayColor: MaterialStateProperty.all(Colors.transparent),
-                          backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                          foregroundColor: MaterialStateProperty.all(Colors.transparent),
+                          shadowColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                               side: BorderSide(color: Colors.transparent),
@@ -297,7 +322,8 @@ class _TodayOrderState extends State<TodayOrder> {
           //   }
           // });
           printOrCreateInvoice(invoice, locale).then((pTicket) async {
-            final BluetoothP.PosPrintResult res = await printerManager.printTicket(pTicket);
+            final BluetoothP.PosPrintResult res =
+                await printerManager.printTicket(pTicket);
             print('Print result: ${res.msg}');
           });
         }
@@ -305,7 +331,8 @@ class _TodayOrderState extends State<TodayOrder> {
     }).catchError((e) {});
   }
 
-  Future<Ticket> printOrCreateInvoice(Invoice invoice, AppLocalizations locale) async {
+  Future<Ticket> printOrCreateInvoice(
+      Invoice invoice, AppLocalizations locale) async {
     final Ticket ticket = Ticket(PaperSize.mm80);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final ByteData data = await rootBundle.load('assets/icon.jpg');
@@ -321,26 +348,45 @@ class _TodayOrderState extends State<TodayOrder> {
         ),
         linesAfter: 1);
 
-    ticket.text('${invoice.address}', styles: PosStyles(align: PosAlign.center));
-    ticket.text('${invoice.city} (${invoice.pincode})', styles: PosStyles(align: PosAlign.center));
-    ticket.text('Tel: ${invoice.number}', styles: PosStyles(align: PosAlign.center));
+    ticket.text('${invoice.address}',
+        styles: PosStyles(align: PosAlign.center));
+    ticket.text('${invoice.city} (${invoice.pincode})',
+        styles: PosStyles(align: PosAlign.center));
+    ticket.text('Tel: ${invoice.number}',
+        styles: PosStyles(align: PosAlign.center));
     ticket.hr();
     ticket.row([
       PosColumn(text: '#', width: 1),
       PosColumn(text: locale.invoice1h, width: 7),
       PosColumn(text: locale.invoice2h, width: 1),
-      PosColumn(text: locale.invoice3h, width: 2, styles: PosStyles(align: PosAlign.right)),
-      PosColumn(text: locale.invoice4h, width: 2, styles: PosStyles(align: PosAlign.right)),
+      PosColumn(
+          text: locale.invoice3h,
+          width: 2,
+          styles: PosStyles(align: PosAlign.right)),
+      PosColumn(
+          text: locale.invoice4h,
+          width: 2,
+          styles: PosStyles(align: PosAlign.right)),
     ]);
     List<OrderDetails> orderDetaisl = List.from(invoice.orderDetails);
     int it = 1;
     for (OrderDetails details in orderDetaisl) {
       ticket.row([
         PosColumn(text: '$it', width: 1),
-        PosColumn(text: '${details.productName} (${details.quantity} ${details.unit})', width: 7),
+        PosColumn(
+            text:
+                '${details.productName} (${details.quantity} ${details.unit})',
+            width: 7),
         PosColumn(text: '${details.qty}', width: 1),
-        PosColumn(text: '${details.price}', width: 2, styles: PosStyles(align: PosAlign.right)),
-        PosColumn(text: '${double.parse('${details.price}') * double.parse('${details.qty}')}', width: 2, styles: PosStyles(align: PosAlign.right)),
+        PosColumn(
+            text: '${details.price}',
+            width: 2,
+            styles: PosStyles(align: PosAlign.right)),
+        PosColumn(
+            text:
+                '${double.parse('${details.price}') * double.parse('${details.qty}')}',
+            width: 2,
+            styles: PosStyles(align: PosAlign.right)),
       ]);
       it++;
     }
@@ -356,7 +402,8 @@ class _TodayOrderState extends State<TodayOrder> {
             width: PosTextSize.size2,
           )),
       PosColumn(
-          text: '$apCurrency ${double.parse('${invoice.totalPrice}') + double.parse('${invoice.deliveryCharge}')}',
+          text:
+              '$apCurrency ${double.parse('${invoice.totalPrice}') + double.parse('${invoice.deliveryCharge}')}',
           width: 6,
           styles: PosStyles(
             align: PosAlign.right,
@@ -367,21 +414,35 @@ class _TodayOrderState extends State<TodayOrder> {
 
     ticket.hr(ch: '=', linesAfter: 1);
     ticket.row([
-      PosColumn(text: locale.invoice5h, width: 7, styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
-      PosColumn(text: '$apCurrency ${invoice.totalPrice}', width: 5, styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
+      PosColumn(
+          text: locale.invoice5h,
+          width: 7,
+          styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
+      PosColumn(
+          text: '$apCurrency ${invoice.totalPrice}',
+          width: 5,
+          styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
     ]);
     ticket.row([
-      PosColumn(text: locale.invoice6h, width: 7, styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
-      PosColumn(text: '$apCurrency ${invoice.deliveryCharge}', width: 5, styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
+      PosColumn(
+          text: locale.invoice6h,
+          width: 7,
+          styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
+      PosColumn(
+          text: '$apCurrency ${invoice.deliveryCharge}',
+          width: 5,
+          styles: PosStyles(align: PosAlign.right, width: PosTextSize.size2)),
     ]);
 
     ticket.feed(2);
-    ticket.text(locale.invoice7h, styles: PosStyles(align: PosAlign.center, bold: true));
+    ticket.text(locale.invoice7h,
+        styles: PosStyles(align: PosAlign.center, bold: true));
 
     final now = DateTime.now();
     final formatter = DateFormat('MM/dd/yyyy H:m');
     final String timestamp = formatter.format(now);
-    ticket.text(timestamp, styles: PosStyles(align: PosAlign.center), linesAfter: 2);
+    ticket.text(timestamp,
+        styles: PosStyles(align: PosAlign.center), linesAfter: 2);
     ticket.feed(2);
     ticket.cut();
     return ticket;
@@ -396,7 +457,9 @@ class _TodayOrderState extends State<TodayOrder> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset('assets/icon.png', height: 70)),
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(ImageConstants.APP_LOGO, height: 70)),
               SizedBox(width: 15),
               Expanded(
                 child: Column(
@@ -418,10 +481,19 @@ class _TodayOrderState extends State<TodayOrder> {
                     Text(
                       mainP.user_address,
                       maxLines: 2,
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 12),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(fontSize: 12),
                     ),
                     SizedBox(height: 16),
-                    Text(locale.orderedOn + ' ${mainP.order_details[0].order_date}', style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 10.5)),
+                    Text(
+                        locale.orderedOn +
+                            ' ${mainP.order_details[0].order_date}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            .copyWith(fontSize: 10.5)),
                   ],
                 ),
               ),
@@ -434,7 +506,10 @@ class _TodayOrderState extends State<TodayOrder> {
             child: Text(
               locale.orderID + ' #${mainP.cart_id}',
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 10.5),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2
+                  .copyWith(fontSize: 10.5),
             ),
           ),
         ],
@@ -442,7 +517,8 @@ class _TodayOrderState extends State<TodayOrder> {
     );
   }
 
-  Padding buildAmountRow(String name, String price, {FontWeight fontWeight = FontWeight.w500}) {
+  Padding buildAmountRow(String name, String price,
+      {FontWeight fontWeight = FontWeight.w500}) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Row(
@@ -461,21 +537,30 @@ class _TodayOrderState extends State<TodayOrder> {
     );
   }
 
-  Column buildGreyColumn(BuildContext context, String text1, String text2, {Color text2Color = Colors.black}) {
+  Column buildGreyColumn(BuildContext context, String text1, String text2,
+      {Color text2Color = Colors.black}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(text1, style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 11)),
+        Text(text1,
+            style:
+                Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 11)),
         SizedBox(height: 8),
         LimitedBox(
           maxWidth: 100,
-          child: Text(text2, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: text2Color)),
+          child: Text(text2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: text2Color)),
         ),
       ],
     );
   }
 
-  Container buildBluetoothCard(BuildContext context, BluetoothP.PrinterBluetooth bt, AppLocalizations locale) {
+  Container buildBluetoothCard(BuildContext context,
+      BluetoothP.PrinterBluetooth bt, AppLocalizations locale) {
     var locale = AppLocalizations.of(context);
     return Container(
       // height: 500,
@@ -490,16 +575,27 @@ class _TodayOrderState extends State<TodayOrder> {
         children: [
           Row(
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(8), child: Icon(Icons.bluetooth_audio_sharp)),
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Icon(Icons.bluetooth_audio_sharp)),
               SizedBox(
                 width: 10,
               ),
               RichText(
-                  text: TextSpan(style: Theme.of(context).textTheme.subtitle1, children: <TextSpan>[
-                TextSpan(text: '${bt.name}\n'),
-                TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
-                TextSpan(text: '${bt.address} ${locale.sold}', style: Theme.of(context).textTheme.bodyText2.copyWith(height: 0.5)),
-              ])),
+                  text: TextSpan(
+                      style: Theme.of(context).textTheme.subtitle1,
+                      children: <TextSpan>[
+                    TextSpan(text: '${bt.name}\n'),
+                    TextSpan(
+                        text: '${locale.apparel}\n\n',
+                        style: Theme.of(context).textTheme.subtitle2),
+                    TextSpan(
+                        text: '${bt.address} ${locale.sold}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(height: 0.5)),
+                  ])),
             ],
           ),
           Align(

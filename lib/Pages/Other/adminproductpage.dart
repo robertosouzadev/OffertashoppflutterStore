@@ -9,6 +9,7 @@ import 'package:vendor/Routes/routes.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/productmodel/adminprodcut.dart';
 import 'package:vendor/beanmodel/productmodel/storeprodcut.dart';
+import 'package:vendor/widgets/my_text_field.dart';
 
 class MyAdminProduct extends StatefulWidget {
   @override
@@ -41,10 +42,16 @@ class MyAdminProductState extends State<MyAdminProduct> {
     setState(() {
       isLoading = true;
     });
-    http.post(storeProductsAdminUri, body: {'store_id': '${prefs.getInt('store_id')}', 'searchstring': (adminProductSearch != null && adminProductSearch != '') ? adminProductSearch : ''}).then((value) {
+    http.post(storeProductsAdminUri, body: {
+      'store_id': '${prefs.getInt('store_id')}',
+      'searchstring': (adminProductSearch != null && adminProductSearch != '')
+          ? adminProductSearch
+          : ''
+    }).then((value) {
       print(value.body);
       if (value.statusCode == 200) {
-        StoreAdminProduct productMain = StoreAdminProduct.fromJson(jsonDecode(value.body));
+        StoreAdminProduct productMain =
+            StoreAdminProduct.fromJson(jsonDecode(value.body));
         if ('${productMain.status}' == '1') {
           setState(() {
             adminproductData.clear();
@@ -65,7 +72,8 @@ class MyAdminProductState extends State<MyAdminProduct> {
   Future _search(String searchString) async {
     try {
       adminproductData.clear();
-      adminProductSearch = searchString != null && searchString.isNotEmpty ? searchString : null;
+      adminProductSearch =
+          searchString != null && searchString.isNotEmpty ? searchString : null;
 
       getAllAdminProductInfo();
     } catch (e) {
@@ -78,21 +86,13 @@ class MyAdminProductState extends State<MyAdminProduct> {
     var locale = AppLocalizations.of(context);
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.all(5),
-          height: 42,
-          decoration: BoxDecoration(border: Border.all(width: 1, color: Theme.of(context).textTheme.subtitle2.color), borderRadius: BorderRadius.all(Radius.circular(5))),
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: MyTextField(
+            Key('1'),
             controller: searchC,
-            decoration: InputDecoration(
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: Icon(Icons.search),
-              ),
-              hintText: 'Search',
-              contentPadding: EdgeInsets.only(top: 5, left: 10),
-            ),
+            prefixIcon: Icon(Icons.search),
+            hintText: 'Pesquise produtos e marcas...',
             onChanged: (val) async {
               await _search(val.trim());
             },
@@ -101,56 +101,69 @@ class MyAdminProductState extends State<MyAdminProduct> {
             },
           ),
         ),
-        Container(
-            height: MediaQuery.of(context).size.height - 221,
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(5.0),
-            child: (isLoading || (adminproductData != null && adminproductData.length > 0))
-                ? (adminproductData != null && adminproductData.length > 0)
-                    ? buildGridAdminView(adminproductData, callBack: (id, type) {
-                        if (type == 'product') {
-                          deleteProductById(id);
-                        } else if (type == 'variant') {
-                          deleteVarientById(id);
-                        }
-                      }, update: (pData, type, pvid) {
-                        StoreProductData productM = StoreProductData(
-                            productId: pData.productId,
-                            productName: pData.productName,
-                            productImage: pData.productImage,
-                            catId: pData.catId,
-                            varients: <Varients>[Varients(varientId: pData.varientId, varientImage: pData.varientImage, description: pData.description, unit: pData.unit, quantity: pData.quantity, price: pData.price, ean: pData.ean)]);
-                        if (type == 'product') {
-                          Navigator.pushNamed(context, PageRoutes.updateitem, arguments: {
-                            'pData': pData,
-                          }).then((value) {
-                            getAllAdminProductInfo();
-                          }).catchError((e) {
-                            print(e);
-                          });
-                        } else if (type == 'variant') {
-                          Navigator.pushNamed(context, PageRoutes.editItem, arguments: {
-                            'pData': pData,
-                            'vid': pvid,
-                          }).then((value) {
-                            getAllAdminProductInfo();
-                          }).catchError((e) {
-                            print(e);
-                          });
-                        }
-                      })
-                    : buildGridSHView()
-                : Align(
-                    alignment: Alignment.center,
-                    child: Text(locale.itempagenomore),
-                  )),
+        Expanded(
+          child: (isLoading ||
+                  (adminproductData != null && adminproductData.length > 0))
+              ? (adminproductData != null && adminproductData.length > 0)
+                  ? buildGridAdminView(adminproductData, callBack: (id, type) {
+                      if (type == 'product') {
+                        deleteProductById(id);
+                      } else if (type == 'variant') {
+                        deleteVarientById(id);
+                      }
+                    }, update: (pData, type, pvid) {
+                      StoreProductData productM = StoreProductData(
+                          productId: pData.productId,
+                          productName: pData.productName,
+                          productImage: pData.productImage,
+                          catId: pData.catId,
+                          varients: <Varients>[
+                            Varients(
+                                varientId: pData.varientId,
+                                varientImage: pData.varientImage,
+                                description: pData.description,
+                                unit: pData.unit,
+                                quantity: pData.quantity,
+                                price: pData.price,
+                                ean: pData.ean)
+                          ]);
+                      if (type == 'product') {
+                        Navigator.pushNamed(context, PageRoutes.updateitem,
+                            arguments: {
+                              'pData': pData,
+                            }).then((value) {
+                          getAllAdminProductInfo();
+                        }).catchError((e) {
+                          print(e);
+                        });
+                      } else if (type == 'variant') {
+                        Navigator.pushNamed(context, PageRoutes.editItem,
+                            arguments: {
+                              'pData': pData,
+                              'vid': pvid,
+                            }).then((value) {
+                          getAllAdminProductInfo();
+                        }).catchError((e) {
+                          print(e);
+                        });
+                      }
+                    })
+                  : buildGridSHView()
+              : Align(
+                  alignment: Alignment.center,
+                  child: Text(locale.itempagenomore),
+                ),
+        ),
       ],
     );
   }
 
   void deleteVarientById(dynamic id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    http.post(storeProductsDeleteUri, body: {'varient_id': '$id', 'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storeProductsDeleteUri, body: {
+      'varient_id': '$id',
+      'store_id': '${prefs.getInt('store_id')}'
+    }).then((value) {
       print(value.body);
       if (value.statusCode == 200) {}
       setState(() {
@@ -164,7 +177,8 @@ class MyAdminProductState extends State<MyAdminProduct> {
   }
 
   void deleteProductById(dynamic id) async {
-    http.post(storeProductsDeleteUri, body: {'product_id': '$id'}).then((value) {
+    http.post(storeProductsDeleteUri, body: {'product_id': '$id'}).then(
+        (value) {
       print(value.body);
       if (value.statusCode == 200) {}
       setState(() {

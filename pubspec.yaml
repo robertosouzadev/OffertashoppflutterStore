@@ -80,18 +80,40 @@ dev_dependencies:
 flutter_icons:
   android: "ic_launcher"
   ios: true
-  image_path: "assets/icon.png"
+  image_path: "assets/images/app_logo.png"
 
 
 flutter:
   uses-material-design: true
   fonts:
-    - family: ProductSans
+    - family: Noah
       fonts:
-        - asset: fonts/ProductSans-Regular.ttf
-        - asset: fonts/ProductSans-Bold.ttf
+        - asset: fonts/Noah-Regular.ttf
+        - asset: fonts/Noah-Bold.ttf
 
   assets:
     - assets/
     - assets/Logos/
     - assets/ProductImages/
+    - assets/images/app_logo.png
+    # - assets/images/chat_background.jpg
+    # - assets/images/intro_1.png
+    # - assets/images/intro_2.png
+    # - assets/images/intro_3.png
+    # - assets/images/forgotPassword.jpg
+    # - assets/images/facebook_logo.svg
+    # - assets/images/google_logo.svg
+    # - assets/images/top_deals_logo.svg
+    # - assets/images/coupons_logo.svg
+    # - assets/images/logout_logo.svg
+    # - assets/images/facebook_logo.svg
+    # - assets/images/google_logo.svg 
+    # - assets/images/all_categories_logo.svg
+    # - assets/images/live_chat_logo.svg 
+    # - assets/images/top_deals_logo.svg
+    # - assets/images/product_request_logo.svg
+    # - assets/images/track_order_logo.svg
+    # - assets/images/filter.svg
+    # - assets/images/apple_logo.svg
+    # - assets/images/email_outlined.svg
+    # - assets/images/chat_background.jpg

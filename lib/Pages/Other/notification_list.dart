@@ -13,6 +13,8 @@ import 'package:vendor/baseurl/baseurlg.dart' as baseUrl;
 import 'package:vendor/beanmodel/notification.dart';
 import 'package:vendor/beanmodel/revenue/topselling.dart';
 
+import '../../constants/images_constants.dart';
+
 class NotificationListPage extends StatefulWidget with WidgetsBindingObserver {
   @override
   _NotificationListPageState createState() => _NotificationListPageState();
@@ -53,9 +55,11 @@ class _NotificationListPageState extends State<NotificationListPage> {
     setState(() {
       isLoading = true;
     });
-    http.post(storeNotificationUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storeNotificationUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       if (value.statusCode == 200) {
-        Notifications notification = Notifications.fromJson(jsonDecode(value.body));
+        Notifications notification =
+            Notifications.fromJson(jsonDecode(value.body));
         // setState(() {
         //   orderCount = notification;
         // });
@@ -82,9 +86,11 @@ class _NotificationListPageState extends State<NotificationListPage> {
     setState(() {
       isLoading = true;
     });
-    http.post(storeNotificationDeleteAllUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storeNotificationDeleteAllUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       if (value.statusCode == 200) {
-        Notifications notification = Notifications.fromJson(jsonDecode(value.body));
+        Notifications notification =
+            Notifications.fromJson(jsonDecode(value.body));
         // setState(() {
         //   orderCount = notification;
         // });
@@ -116,7 +122,8 @@ class _NotificationListPageState extends State<NotificationListPage> {
                 'Delete all notification',
               ),
               contentTextStyle: Theme.of(context).primaryTextTheme.bodyText1,
-              content: Text('Are you sure you want to delete all notifications'),
+              content:
+                  Text('Are you sure you want to delete all notifications'),
               actions: [
                 TextButton(
                   child: Text('No'),
@@ -135,7 +142,9 @@ class _NotificationListPageState extends State<NotificationListPage> {
             );
           });
     } catch (e) {
-      print("Exception - event_detail.dart- _removeAllNotificationConfirmationDIalog():" + e.toString());
+      print(
+          "Exception - event_detail.dart- _removeAllNotificationConfirmationDIalog():" +
+              e.toString());
     }
   }
 
@@ -198,11 +207,13 @@ class _NotificationListPageState extends State<NotificationListPage> {
                                 //               userId: _stores[index].userId,
                                 //             )));
                               },
-                              child: buildNotificationListCard(context, notificationList[index]));
+                              child: buildNotificationListCard(
+                                  context, notificationList[index]));
                         })
                     : Center(
                         child: Padding(
-                          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height / 3),
                           child: Text('No Notifications'),
                         ),
                       )
@@ -225,7 +236,8 @@ class _NotificationListPageState extends State<NotificationListPage> {
     );
   }
 
-  Container buildOrderCard(BuildContext context, TopSellingRevenueOrdCount orderCount) {
+  Container buildOrderCard(
+      BuildContext context, TopSellingRevenueOrdCount orderCount) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -248,8 +260,17 @@ class _NotificationListPageState extends State<NotificationListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.orders}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalOrders != null) ? '${orderCount.totalOrders}' : '', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.orders}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalOrders != null)
+                          ? '${orderCount.totalOrders}'
+                          : '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -257,8 +278,17 @@ class _NotificationListPageState extends State<NotificationListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.revenue}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalRevenue != null) ? '$apCurrency ${orderCount.totalRevenue}' : '$apCurrency 0.0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.revenue}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalRevenue != null)
+                          ? '$apCurrency ${orderCount.totalRevenue}'
+                          : '$apCurrency 0.0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -266,8 +296,17 @@ class _NotificationListPageState extends State<NotificationListPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.pending}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.pendingOrders != null) ? '${orderCount.pendingOrders}' : '0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.pending}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.pendingOrders != null)
+                          ? '${orderCount.pendingOrders}'
+                          : '0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
           ],
         ),
@@ -369,7 +408,8 @@ class _NotificationListPageState extends State<NotificationListPage> {
     );
   }
 
-  Widget buildNotificationListCard(BuildContext context, NotificationData notificationData) {
+  Widget buildNotificationListCard(
+      BuildContext context, NotificationData notificationData) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -394,7 +434,8 @@ class _NotificationListPageState extends State<NotificationListPage> {
                       ? CachedNetworkImage(
                           width: 60,
                           height: 230,
-                          imageUrl: baseUrl.imagebaseUrl + '${notificationData.image}',
+                          imageUrl: baseUrl.imagebaseUrl +
+                              '${notificationData.image}',
                           fit: BoxFit.fill,
                           placeholder: (context, url) => Align(
                             widthFactor: 50,
@@ -408,7 +449,7 @@ class _NotificationListPageState extends State<NotificationListPage> {
                             ),
                           ),
                           errorWidget: (context, url, error) => Image.asset(
-                            'assets/icon.png',
+                            ImageConstants.APP_LOGO,
                             fit: BoxFit.fill,
                           ),
                         )

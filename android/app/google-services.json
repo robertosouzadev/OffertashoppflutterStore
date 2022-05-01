@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:352076647507:android:6ae28230f6c16927268aa6",
         "android_client_info": {
-          "package_name": "com.gogrocerstore.app"
+          "package_name": "com.rssystem.comprafacilgestao"
         }
       },
       "oauth_client": [
@@ -54,7 +54,7 @@
           "client_id": "352076647507-b08kp36s6rlv7l00p8me848r4569v51m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.gogrocerstore.app",
+            "package_name": "com.rssystem.comprafacilgestao",
             "certificate_hash": "1f936bcb9bb0b9c127049e2bd8f78cf770726746"
           }
         },

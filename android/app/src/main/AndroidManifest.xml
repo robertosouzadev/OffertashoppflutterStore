@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.gogrocerstore.app">
+    package="com.rssystem.comprafacilgestao">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -38,7 +38,7 @@
     </queries>
     <application
         android:name="${applicationName}"
-        android:label="GoGrocer Vendor"
+        android:label="Offerta Shopp Gestao"
         android:hardwareAccelerated="true"
         android:allowBackup="false"
         android:fullBackupContent="false"

@@ -77,6 +77,15 @@ TextStyle h3(BuildContext context) =>
         fontWeight: FontWeight.bold,
         height: 1.5);
 
+TextStyle h2black(BuildContext context) =>
+    Theme.of(context).textTheme.button.copyWith(
+        color: Colors.black45,
+        fontFamily: 'Noah',
+        fontSize: 16,
+        letterSpacing: 0.2,
+        fontWeight: FontWeight.bold,
+        height: 1.5);
+
 TextStyle h3black(BuildContext context) =>
     Theme.of(context).textTheme.button.copyWith(
         color: Colors.black,
@@ -470,15 +479,16 @@ class ThemeUtils {
 //app theme
 final ThemeData appTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
-  fontFamily: 'ProductSans',
+  fontFamily: 'Noah',
   backgroundColor: Colors.black,
-  primaryColor: Color(0xFF39c526),
+  primaryColor: Color.fromARGB(255, 4, 114, 225),
   bottomAppBarColor: Colors.white,
   dividerColor: Color(0xffacacac),
   disabledColor: Color(0xff616161),
   indicatorColor: Color(0xffFF9900),
   cardColor: Color(0xff222e3e),
   hintColor: Color(0xffa3a3a3),
+
   bottomAppBarTheme: BottomAppBarTheme(color: Color(0xffFF9900)),
   appBarTheme: AppBarTheme(
     color: Colors.transparent,

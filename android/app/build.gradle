@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.gogrocerstore.app"
+        applicationId "com.rssystem.comprafacilgestao"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()

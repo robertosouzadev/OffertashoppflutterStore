@@ -12,9 +12,12 @@ import 'package:vendor/Components/entry_field.dart';
 import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/Routes/routes.dart';
 import 'package:vendor/Theme/colors.dart';
+import 'package:vendor/Theme/style.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/appinfomodel.dart';
 import 'package:vendor/beanmodel/signmodel/signmodel.dart';
+import 'package:vendor/widgets/my_header.dart';
+import 'package:vendor/widgets/my_text_field.dart';
 
 class SignIn extends StatefulWidget {
   // final VoidCallback onVerificationDone;
@@ -110,185 +113,167 @@ class _SignInState extends State<SignIn> with WidgetsBindingObserver {
     var locale = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 28.0, left: 0, right: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MyHeader('Vamos começar', 'Informe os dados abaixo',
+                      loginTextStyle(context), loginTextStyle(context)),
+
+                  SizedBox(height: 28),
+                  // Text(
+                  //   locale.welcomeTo,
+                  //   style: Theme.of(context).textTheme.headline3,
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // Divider(
+                  //   thickness: 1.0,
+                  //   color: Colors.transparent,
+                  // ),
+                  // Image.asset(
+                  //   "assets/Logos/icon.png",
+                  //   scale: 2.5,
+                  //   height: 150,
+                  // ),
+                  // Divider(
+                  //   thickness: 2.0,
+                  //   color: Colors.transparent,
+                  // ),
+                  // Text(
+                  //   appName,
+                  //   style: Theme.of(context).textTheme.headline3,
+                  //   textAlign: TextAlign.center,
+                  // ),
+
+                  Divider(
+                    thickness: 1.0,
+                    color: Colors.transparent,
+                  ),
+                  LimitedBox(
+                    child: MyTextField(
+                      Key('1'),
+                      controller: phoneNumberController,
+                      hintText: locale.emailAddress,
+                      prefixIcon: Icon(Icons.email_outlined),
+                      //textInputAction: TextInputAction.next,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+
+                  LimitedBox(
+                    child: MyTextField(
+                      Key('2'),
+                      obscureText: showPassword,
+                      obscuringCharacter: "*",
+                      prefixIcon: Icon(Icons.password_outlined),
+                      controller: passwordController,
+                      hintText: locale.password2,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+
+                  Divider(
+                    thickness: 2.0,
+                    color: Colors.transparent,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (!showProgress) {
+                          Navigator.of(context).pushNamed(PageRoutes.signUp,
+                              arguments: {'appinfo': appInfoModeld});
+                        } else {
+                          Toast.show('Por favor, Aguarde um momento .', context,
+                              duration: Toast.LENGTH_SHORT,
+                              gravity: Toast.CENTER);
+                        }
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RichText(
+                          text: TextSpan(
+                              text: locale.notuser1,
+                              style: TextStyle(
+                                  color: kMainTextColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w300),
+                              children: [
+                                TextSpan(
+                                    text: locale.notuser2,
+                                    style: TextStyle(
+                                        color: kMainColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600))
+                              ]),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(PageRoutes.langnew);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          locale.selectPreferredLanguage,
+                          style: TextStyle(fontSize: 14, color: kMainColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Text(
+                  //   'Not a user? ',
+                  //   style: Theme.of(context).textTheme.headline3,
+                  //   textAlign: TextAlign.center,
+                  // )
+                ],
+              ),
+            ),
+            (showProgress)
+                ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        locale.welcomeTo,
-                        style: Theme.of(context).textTheme.headline3,
-                        textAlign: TextAlign.center,
-                      ),
                       Divider(
                         thickness: 1.0,
                         color: Colors.transparent,
                       ),
-                      Image.asset(
-                        "assets/Logos/icon.png",
-                        scale: 2.5,
-                        height: 150,
-                      ),
-                      Divider(
-                        thickness: 2.0,
-                        color: Colors.transparent,
-                      ),
-                      Text(
-                        appName,
-                        style: Theme.of(context).textTheme.headline3,
-                        textAlign: TextAlign.center,
-                      ),
+                      Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
+                          child: CircularProgressIndicator()),
                       Divider(
                         thickness: 1.0,
                         color: Colors.transparent,
                       ),
-                      EntryField(
-                        label: locale.emailAddress,
-                        hint: locale.enterEmailAddress,
-                        controller: phoneNumberController,
-                        inputAction: TextInputAction.next,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 1.0),
-                        child: Text(
-                          locale.password1,
-                          style: Theme.of(context).textTheme.headline6.copyWith(
-                                color: kMainTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 21.7,
-                              ),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 1.0),
-                        child: TextField(
-                          obscureText: showPassword,
-                          obscuringCharacter: "*",
-
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[200]),
-                            ),
-                            hintText: locale.password2,
-                            hintStyle:
-                                Theme.of(context).textTheme.subtitle1.copyWith(
-                                      color: kHintColor,
-                                      fontSize: 18.3,
-                                    ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                showPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  showPassword = !showPassword;
-                                });
-                              },
-                            ),
-                          ),
-                          textInputAction: TextInputAction.done,
-                          // label: locale.password1,
-                          // hint: locale.password2,
-
-                          // inputAction: TextInputAction.done,
-                        ),
-                      ),
-                      Divider(
-                        thickness: 2.0,
-                        color: Colors.transparent,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (!showProgress) {
-                              Navigator.of(context).pushNamed(PageRoutes.signUp,
-                                  arguments: {'appinfo': appInfoModeld});
-                            } else {
-                              Toast.show(
-                                  'Wait currently process running.', context,
-                                  duration: Toast.LENGTH_SHORT,
-                                  gravity: Toast.CENTER);
-                            }
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: locale.notuser1,
-                                  style: TextStyle(
-                                      color: kMainTextColor,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300),
-                                  children: [
-                                    TextSpan(
-                                        text: locale.notuser2,
-                                        style: TextStyle(
-                                            color: kMainColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600))
-                                  ]),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(PageRoutes.langnew);
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              locale.selectPreferredLanguage,
-                              style: TextStyle(fontSize: 14, color: kMainColor),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Text(
-                      //   'Not a user? ',
-                      //   style: Theme.of(context).textTheme.headline3,
-                      //   textAlign: TextAlign.center,
-                      // )
                     ],
-                  ),
-                ),
-              ),
-              (showProgress)
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Divider(
-                          thickness: 1.0,
-                          color: Colors.transparent,
-                        ),
-                        Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
-                            child: CircularProgressIndicator()),
-                        Divider(
-                          thickness: 1.0,
-                          color: Colors.transparent,
-                        ),
-                      ],
-                    )
-                  : CustomButton(
-                      onTap: () {
+                  )
+                : Container(
+                    height: 48,
+                    margin: EdgeInsets.all(16),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: elevatedButtonStyle(context),
+                      onPressed: () {
                         if (!showProgress) {
                           setState(() {
                             showProgress = true;
@@ -317,9 +302,10 @@ class _SignInState extends State<SignIn> with WidgetsBindingObserver {
                           }
                         }
                       },
+                      child: Text('Entrar'),
                     ),
-            ],
-          ),
+                  ),
+          ],
         ),
       ),
     );

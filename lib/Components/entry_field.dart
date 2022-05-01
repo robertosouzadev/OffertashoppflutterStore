@@ -26,30 +26,29 @@ class EntryField extends StatefulWidget {
   final TextInputAction inputAction;
   final EdgeInsets contentPading;
 
-  EntryField({
-    this.controller,
-    this.label,
-    this.image,
-    this.initialValue,
-    this.readOnly,
-    this.keyboardType,
-    this.maxLength,
-    this.hint,
-    this.suffixIcon,
-    this.maxLines,
-    this.onTap,
-    this.textCapitalization,
-    this.onSuffixPressed,
-    this.horizontalPadding,
-    this.verticalPadding,
-    this.labelFontWeight,
-    this.labelFontSize,
-    this.underlineColor,
-    this.hintStyle,
-    this.inputAction,
-    this.preFixIcon,
-    this.contentPading
-  });
+  EntryField(
+      {this.controller,
+      this.label,
+      this.image,
+      this.initialValue,
+      this.readOnly,
+      this.keyboardType,
+      this.maxLength,
+      this.hint,
+      this.suffixIcon,
+      this.maxLines,
+      this.onTap,
+      this.textCapitalization,
+      this.onSuffixPressed,
+      this.horizontalPadding,
+      this.verticalPadding,
+      this.labelFontWeight,
+      this.labelFontSize,
+      this.underlineColor,
+      this.hintStyle,
+      this.inputAction,
+      this.preFixIcon,
+      this.contentPading});
 
   @override
   _EntryFieldState createState() => _EntryFieldState();
@@ -70,12 +69,12 @@ class _EntryFieldState extends State<EntryField> {
         children: <Widget>[
           Text(widget.label ?? '',
               style: Theme.of(context).textTheme.headline6.copyWith(
-                  color: kMainTextColor,
+                  color: Theme.of(context).primaryColor,
                   fontWeight: widget.labelFontWeight ?? FontWeight.bold,
                   fontSize: widget.labelFontSize ?? 21.7)),
           TextField(
             textCapitalization:
-            widget.textCapitalization ?? TextCapitalization.sentences,
+                widget.textCapitalization ?? TextCapitalization.sentences,
             cursorColor: kMainColor,
             autofocus: false,
             onEditingComplete: () {
@@ -95,7 +94,7 @@ class _EntryFieldState extends State<EntryField> {
             controller: widget.controller,
             readOnly: widget.readOnly ?? false,
             keyboardType: widget.keyboardType,
-            textInputAction: widget.inputAction??TextInputAction.done,
+            textInputAction: widget.inputAction ?? TextInputAction.done,
             minLines: 1,
             maxLength: widget.maxLength,
             maxLines: widget.maxLines ?? 1,
@@ -104,14 +103,16 @@ class _EntryFieldState extends State<EntryField> {
                   borderSide: BorderSide(
                       color: widget.underlineColor ?? Colors.grey[200]),
                 ),
-                suffixIcon: widget.suffixIcon!=null?IconButton(
-                  icon: Icon(
-                    widget.suffixIcon,
-                    size: 40.0,
-                    color: Theme.of(context).backgroundColor,
-                  ),
-                  onPressed: widget.onSuffixPressed ?? null,
-                ):null,
+                suffixIcon: widget.suffixIcon != null
+                    ? IconButton(
+                        icon: Icon(
+                          widget.suffixIcon,
+                          size: 40.0,
+                          color: Theme.of(context).backgroundColor,
+                        ),
+                        onPressed: widget.onSuffixPressed ?? null,
+                      )
+                    : null,
                 contentPadding: widget.contentPading,
                 prefixIcon: widget.preFixIcon,
                 counterText: "",
