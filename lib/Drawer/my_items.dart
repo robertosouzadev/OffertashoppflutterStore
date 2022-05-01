@@ -42,82 +42,95 @@ class _MyItemsPageState extends State<MyItemsPage>
       resizeToAvoidBottomInset: false,
       drawer: buildDrawer(context),
 
-      appBar: AppBar(
-        title: Text(
-          locale.myItems,
-          style: TextStyle(
-            color: ColorConstants.letterColor,
-          ),
-        ),
-        bottom: TabBar(
-          padding: EdgeInsets.only(left: 16, right: 16),
-          unselectedLabelColor: ColorConstants.primaryColor,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: ColorConstants.primaryColor),
-          tabs: [
-            // Card(
-            //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
-            //   elevation: 3,
-            //   child: Container(
-            //     width: MediaQuery.of(context).size.width / 2,
-            //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            //     child: Text(
-            Tab(
-              icon: Icon(Icons.timer_sharp),
-              child: Container(
-                margin: EdgeInsets.only(left: 16, right: 16),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(locale.storepheading),
-                ),
-              ),
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 150),
+        child: AppBar(
+          title: Text(
+            locale.myItems,
+            style: TextStyle(
+              color: ColorConstants.letterColor,
             ),
-
-            // icon: Icon(Icons.timer_sharp), text: (locale.storepheading)),
-
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(fontSize: 16),
-            // ),
-            //   ),
-            // ),
-            // Card(
-            //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
-            //   elevation: 3,
-            //   child: Container(
-            //     width: MediaQuery.of(context).size.width / 2,
-            //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            // child: Text(
-            Tab(
-              icon: Icon(Icons.next_week),
-              child: Container(
-                margin: EdgeInsets.only(left: 8, right: 8),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(locale.adminpheading),
+          ),
+          bottom: TabBar(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            unselectedLabelColor: ColorConstants.primaryColor,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: ColorConstants.primaryColor),
+            tabs: [
+              // Card(
+              //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
+              //   elevation: 3,
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 2,
+              //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              //     child: Text(
+              Container(
+                color: ColorConstants.primaryColor.withAlpha(30),
+                child: Tab(
+                  icon: Icon(Icons.timer_sharp),
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16, right: 16),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        locale.storepheading,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            )
 
-            //icon: Icon(Icons.next_week), text: locale.adminpheading),
+              // icon: Icon(Icons.timer_sharp), text: (locale.storepheading)),
 
-            //       textAlign: TextAlign.center,
-            //       style: TextStyle(fontSize: 16),
-            //     ),
-            //   ),
-            // )
-          ],
-          isScrollable: false,
-          controller: tabController,
-          indicatorWeight: 1,
-          indicatorColor: Colors.transparent,
-          labelPadding: EdgeInsets.all(0),
-          onTap: (int index) {
-            setState(() {
-              currentTabIndex = index;
-            });
-          },
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(fontSize: 16),
+              // ),
+              //   ),
+              // ),
+              // Card(
+              //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
+              //   elevation: 3,
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 2,
+              //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              // child: Text(
+              Container(
+                color: ColorConstants.primaryColor.withAlpha(30),
+                child: Tab(
+                  icon: Icon(Icons.next_week),
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8, right: 8),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(locale.adminpheading,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ),
+              )
+
+              //icon: Icon(Icons.next_week), text: locale.adminpheading),
+
+              //       textAlign: TextAlign.center,
+              //       style: TextStyle(fontSize: 16),
+              //     ),
+              //   ),
+              // )
+            ],
+            isScrollable: false,
+            controller: tabController,
+            indicatorWeight: 1,
+            indicatorColor: Colors.transparent,
+            labelPadding: EdgeInsets.all(0),
+            onTap: (int index) {
+              setState(() {
+                currentTabIndex = index;
+              });
+            },
+          ),
         ),
       ),
 

@@ -14,6 +14,8 @@ import 'package:vendor/Pages/orderpage/todayorder.dart';
 import 'package:vendor/Pages/orderpage/tomorroworder.dart';
 import 'package:vendor/beanmodel/chatmodel/global.dart' as global;
 
+import '../constants/color.dart';
+
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 // const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -37,7 +39,8 @@ class NewOrdersDrawer extends StatefulWidget {
   _NewOrdersDrawerState createState() => _NewOrdersDrawerState();
 }
 
-class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _NewOrdersDrawerState extends State<NewOrdersDrawer>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int pageIndex = 0;
   TabController tabController;
   bool enteredFirst = true;
@@ -71,7 +74,8 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProv
     _isInForeground = state == AppLifecycleState.resumed;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('islogin')) {
-      if (global.localNotificationModel.chatId != null && !global.isChatNotTapped) {
+      if (global.localNotificationModel.chatId != null &&
+          !global.isChatNotTapped) {
         if (global.localNotificationModel.route == 'chatlist_screen') {
           if (state == AppLifecycleState.resumed) {
             setState(() {
@@ -108,25 +112,30 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProv
     }
     messaging = FirebaseMessaging.instance;
     iosPermission(messaging);
-    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage message) {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
       if (message != null) {
         RemoteNotification notification = message.notification;
         if (notification != null) {
-          _showNotification(notification.title, notification.body, notification.android.imageUrl);
+          _showNotification(notification.title, notification.body,
+              notification.android.imageUrl);
         }
       }
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message != null) {
-        LocalNotification _notificationModel = LocalNotification.fromJson(message.data);
+        LocalNotification _notificationModel =
+            LocalNotification.fromJson(message.data);
         global.localNotificationModel = _notificationModel;
         setState(() {
           global.isChatNotTapped = false;
         });
         RemoteNotification notification = message.notification;
         if (notification != null && _isInForeground) {
-          _showNotification(notification.title, notification.body, notification.android.imageUrl);
+          _showNotification(notification.title, notification.body,
+              notification.android.imageUrl);
         }
       }
     });
@@ -170,33 +179,66 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProv
               height: 10,
             ),
             TabBar(
+              padding: EdgeInsets.only(left: 16, right: 16),
+              unselectedLabelColor: ColorConstants.primaryColor,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: ColorConstants.primaryColor),
               tabs: [
-                Card(
-                  color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
-                  elevation: 3,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Text(
-                      locale.todayOrd,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16),
+                // Card(
+                //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
+                //   elevation: 3,
+                //   child:
+                Container(
+                  color: ColorConstants.primaryColor.withAlpha(30),
+                  child: Tab(
+                    icon: Icon(Icons.timer_sharp),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 16, right: 16),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(locale.todayOrd,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
                     ),
                   ),
                 ),
-                Card(
-                  color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
-                  elevation: 3,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Text(
-                      locale.nextDayOrder,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16),
+
+                // width: MediaQuery.of(context).size.width / 2,
+                // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                // child: Text(
+
+                // textAlign: TextAlign.center,
+                // style: TextStyle(fontSize: 16),
+                //   ),
+                Container(
+                  color: ColorConstants.primaryColor.withAlpha(30),
+                  child: Tab(
+                    icon: Icon(Icons.next_week),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 8, right: 8),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(locale.nextDayOrder,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
                     ),
                   ),
                 )
+                // Card(
+                //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
+                //   elevation: 3,
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width / 2,
+                //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                //     child: Text(
+                //       locale.nextDayOrder,
+                //       textAlign: TextAlign.center,
+                //       style: TextStyle(fontSize: 16),
+                //     ),
+                //   ),
+                // )
               ],
               isScrollable: false,
               controller: tabController,
@@ -224,7 +266,8 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProv
     );
   }
 
-  Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {}
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {}
 
   Future selectNotification(String payload) async {}
 
@@ -239,12 +282,15 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer> with SingleTickerProv
   }
 }
 
-Future<void> _showNotification(dynamic title, dynamic body, dynamic imageUrl) async {
+Future<void> _showNotification(
+    dynamic title, dynamic body, dynamic imageUrl) async {
   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
     if (!isAllowed) {
       AwesomeNotifications().requestPermissionToSendNotifications();
     } else {
-      if (imageUrl != null && '$imageUrl'.toUpperCase() != 'NUll' && '$imageUrl'.toUpperCase() != 'N/A') {
+      if (imageUrl != null &&
+          '$imageUrl'.toUpperCase() != 'NUll' &&
+          '$imageUrl'.toUpperCase() != 'N/A') {
         AwesomeNotifications().createNotification(
             content: NotificationContent(
           id: 10,
@@ -257,7 +303,13 @@ Future<void> _showNotification(dynamic title, dynamic body, dynamic imageUrl) as
           notificationLayout: NotificationLayout.BigPicture,
         ));
       } else {
-        AwesomeNotifications().createNotification(content: NotificationContent(id: 10, channelKey: '2121', title: '$title', body: '$body', icon: 'resource://drawable/icon'));
+        AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: 10,
+                channelKey: '2121',
+                title: '$title',
+                body: '$body',
+                icon: 'resource://drawable/icon'));
       }
     }
   });

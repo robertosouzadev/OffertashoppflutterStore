@@ -8,6 +8,8 @@ import 'package:vendor/Components/drawer.dart';
 import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/revenue/topselling.dart';
+import 'package:vendor/constants/color.dart';
+import '../Theme/style.dart';
 
 class TopSellingItem {
   TopSellingItem(this.img, this.name, this.sold, this.price);
@@ -52,9 +54,11 @@ class _InsightPageState extends State<InsightPage> {
       storeImage = prefs.getString('store_photo');
       apCurrency = prefs.getString('app_currency');
     });
-    http.post(storeProductRevenueUri, body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
+    http.post(storeProductRevenueUri,
+        body: {'store_id': '${prefs.getInt('store_id')}'}).then((value) {
       if (value.statusCode == 200) {
-        TopSellingRevenueOrdCount topSellingRevenueOrdCount = TopSellingRevenueOrdCount.fromJson(jsonDecode(value.body));
+        TopSellingRevenueOrdCount topSellingRevenueOrdCount =
+            TopSellingRevenueOrdCount.fromJson(jsonDecode(value.body));
         setState(() {
           orderCount = topSellingRevenueOrdCount;
         });
@@ -80,7 +84,7 @@ class _InsightPageState extends State<InsightPage> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: ColorConstants.backgroundColor,
       drawer: buildDrawer(context),
       body: Stack(
         children: [
@@ -100,7 +104,8 @@ class _InsightPageState extends State<InsightPage> {
             child: AppBar(
               title: Text(
                 locale.insight,
-                style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
+                style:
+                    TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
               ),
               centerTitle: true,
               iconTheme: new IconThemeData(color: Colors.white),
@@ -131,7 +136,8 @@ class _InsightPageState extends State<InsightPage> {
                 //   ),
                 // ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 16),
                   child: Text(
                     locale.topSellingItems,
                     style: Theme.of(context).textTheme.subtitle1,
@@ -145,7 +151,12 @@ class _InsightPageState extends State<InsightPage> {
                             shrinkWrap: true,
                             itemCount: topSellingItems.length,
                             itemBuilder: (context, index) {
-                              return buildTopSellingItemCard(context, topSellingItems[index].varientImage, topSellingItems[index].productName, '${topSellingItems[index].count}', '${topSellingItems[index].revenue}');
+                              return buildTopSellingItemCard(
+                                  context,
+                                  topSellingItems[index].varientImage,
+                                  topSellingItems[index].productName,
+                                  '${topSellingItems[index].count}',
+                                  '${topSellingItems[index].revenue}');
                             })
                         : Align(
                             alignment: Alignment.center,
@@ -162,13 +173,21 @@ class _InsightPageState extends State<InsightPage> {
               ],
             ),
           ),
-          Positioned.directional(textDirection: Directionality.of(context), top: 130, start: 0, end: 0, child: (!isLoading) ? buildOrderCard(context, orderCount) : buildOrderSHCard()),
+          Positioned.directional(
+              textDirection: Directionality.of(context),
+              top: 130,
+              start: 0,
+              end: 0,
+              child: (!isLoading)
+                  ? buildOrderCard(context, orderCount)
+                  : buildOrderSHCard()),
         ],
       ),
     );
   }
 
-  Container buildOrderCard(BuildContext context, TopSellingRevenueOrdCount orderCount) {
+  Container buildOrderCard(
+      BuildContext context, TopSellingRevenueOrdCount orderCount) {
     var locale = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -191,8 +210,18 @@ class _InsightPageState extends State<InsightPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.orders}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalOrders != null && orderCount.totalOrders != '') ? '${orderCount.totalOrders}' : '', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.orders}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalOrders != null &&
+                              orderCount.totalOrders != '')
+                          ? '${orderCount.totalOrders}'
+                          : '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -200,8 +229,17 @@ class _InsightPageState extends State<InsightPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.revenue}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.totalRevenue != null) ? '$apCurrency ${orderCount.totalRevenue}' : '$apCurrency 0.0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.revenue}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.totalRevenue != null)
+                          ? '$apCurrency ${orderCount.totalRevenue}'
+                          : '$apCurrency 0.0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
             VerticalDivider(
               color: Colors.grey[400],
@@ -209,8 +247,17 @@ class _InsightPageState extends State<InsightPage> {
             RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${locale.pending}\n', style: Theme.of(context).textTheme.subtitle2),
-                  TextSpan(text: (orderCount.pendingOrders != null) ? '${orderCount.pendingOrders}' : '0', style: Theme.of(context).textTheme.subtitle1.copyWith(height: 2)),
+                  TextSpan(
+                      text: '${locale.pending}\n',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  TextSpan(
+                      text: (orderCount.pendingOrders != null)
+                          ? '${orderCount.pendingOrders}'
+                          : '0',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(height: 2)),
                 ])),
           ],
         ),
@@ -312,7 +359,8 @@ class _InsightPageState extends State<InsightPage> {
     );
   }
 
-  Container buildTopSellingItemCard(BuildContext context, String img, String name, String sold, String price) {
+  Container buildTopSellingItemCard(BuildContext context, String img,
+      String name, String sold, String price) {
     var locale = AppLocalizations.of(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -325,47 +373,111 @@ class _InsightPageState extends State<InsightPage> {
         children: [
           Row(
             children: [
-              Container(
-                  width: 70,
-                  height: 70,
+              Padding(
+                padding: EdgeInsets.all(6),
+                child: Container(
+                  width: 72,
+                  height: 72,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(5),
                     child: Image.network(
                       img,
                       fit: BoxFit.fill,
-                      width: 70,
-                      height: 70,
+                      width: 72,
+                      height: 72,
                     ),
-                  )),
-              SizedBox(
-                width: 10,
+                  ),
+                ),
               ),
+              SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                        text: TextSpan(style: Theme.of(context).textTheme.subtitle1, children: <TextSpan>[
-                      TextSpan(text: '$name\n'),
-                      TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
-                    ])),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
                       children: [
                         RichText(
-                          text: TextSpan(text: '$sold ${locale.sold}', style: Theme.of(context).textTheme.bodyText2.copyWith(height: 0.5)),
+                          text: TextSpan(
+                              style: Theme.of(context).textTheme.subtitle1,
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '$name\n',
+                                  style: TextStyle(
+                                      fontFamily: 'Noah',
+                                      fontSize: 16,
+                                      color: ColorConstants.darkColor,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5),
+                                ),
+                                TextSpan(
+                                  text: '${locale.apparel}\n\n',
+                                  style: TextStyle(
+                                      fontFamily: 'Noah',
+                                      fontSize: 12,
+                                      color: Colors.grey[400],
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5),
+                                ),
+                              ]),
                         ),
-                        RichText(
-                          text: TextSpan(style: Theme.of(context).textTheme.subtitle2.copyWith(height: 1), children: <TextSpan>[
-                            TextSpan(text: '${locale.revenue} '),
-                            TextSpan(text: '$apCurrency $price', style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14)),
-                          ]),
-                        )
                       ],
-                    )
+                    ),
+                    Wrap(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  text: '$sold ${locale.sold}',
+                                  style: TextStyle(
+                                      fontFamily: 'Noah',
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5)),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: ColorConstants.primaryColor
+                                      .withAlpha(30)),
+                              child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: RichText(
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          fontFamily: 'Noah',
+                                          fontSize: 10,
+                                          color: Colors.black,
+                                          letterSpacing: 0.5,
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.5),
+                                      children: <TextSpan>[
+                                        TextSpan(text: '${locale.revenue} '),
+                                        TextSpan(
+                                            text: '$apCurrency $price',
+                                            style: TextStyle(
+                                                fontFamily: 'Noah',
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                                letterSpacing: 0.5,
+                                                fontWeight: FontWeight.bold,
+                                                height: 1.5)),
+                                      ]),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
