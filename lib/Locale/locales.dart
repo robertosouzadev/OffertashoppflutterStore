@@ -747,7 +747,7 @@ class AppLocalizations {
   //Update 11/04/2022
   //
   String get choosefromgallery {
-    return _localizedValues[locale.languageCode]['bulgarian'];
+    return _localizedValues[locale.languageCode]['choosefromgallery'];
   }
 }
 

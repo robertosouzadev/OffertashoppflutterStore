@@ -12,6 +12,7 @@ import 'package:vendor/Pages/Chat/chat_store.dart';
 import 'package:vendor/baseurl/baseurlg.dart' as baseUrl;
 import 'package:vendor/beanmodel/chatmodel/global.dart' as global;
 import 'package:vendor/beanmodel/revenue/topselling.dart';
+import 'package:vendor/constants/color.dart';
 
 import '../../constants/images_constants.dart';
 
@@ -365,13 +366,23 @@ class _ChatListPageState extends State<ChatListPage> {
           Row(
             children: [
               Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: stores.userProfileImageUrl != null
-                      ? CachedNetworkImage(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: stores.userProfileImageUrl != null
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            topRight: Radius.circular(32),
+                            bottomLeft: Radius.circular(32),
+                            bottomRight: Radius.circular(32),
+                          ),
+                          color: Color.fromRGBO(240, 246, 245, 1),
+                        ),
+                        child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width,
                           height: 230,
                           imageUrl: baseUrl.imagebaseUrl +
@@ -388,16 +399,19 @@ class _ChatListPageState extends State<ChatListPage> {
                               child: CircularProgressIndicator(),
                             ),
                           ),
-                          errorWidget: (context, url, error) => Image.asset(
-                            ImageConstants.APP_LOGO,
-                            fit: BoxFit.fill,
+                          errorWidget: (context, url, error) => CircleAvatar(
+                            backgroundImage:
+                                AssetImage(ImageConstants.APP_LOGO),
+                            backgroundColor: ColorConstants.backgroundColor,
                           ),
-                        )
-                      : Container(
-                          child: Icon(
+                        ))
+                    : Container(
+                        child: Icon(
                           Icons.person,
                           color: Theme.of(context).textTheme.subtitle2.color,
-                        ))),
+                        ),
+                      ),
+              ),
               SizedBox(
                 width: 10,
               ),
@@ -406,26 +420,56 @@ class _ChatListPageState extends State<ChatListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RichText(
-                        text: TextSpan(
-                            style: Theme.of(context).textTheme.subtitle1,
-                            children: <TextSpan>[
-                          TextSpan(text: '${stores.name}'),
-                          //TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
-                        ])),
+                      text: TextSpan(
+                          style: Theme.of(context).textTheme.subtitle1,
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '${stores.name}',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontSize: 16,
+                                    letterSpacing:
+                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1)),
+                            //TextSpan(text: '${locale.apparel}\n\n', style: Theme.of(context).textTheme.subtitle2),
+                          ]),
+                    ),
                     stores.lastMessage != global.imageUploadMessageKey
-                        ? Text('${stores.lastMessage}',
-                            style: Theme.of(context).textTheme.subtitle2)
+                        ? Text(
+                            '${stores.lastMessage}',
+                            style: TextStyle(
+                                color: Color.fromRGBO(102, 102, 102, 1),
+                                fontSize: 13,
+                                letterSpacing:
+                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                fontWeight: FontWeight.normal,
+                                height: 1),
+                          )
                         : Row(
                             children: [
-                              Icon(
-                                Icons.image,
-                                size: 18,
-                                color:
-                                    Theme.of(context).textTheme.subtitle2.color,
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
+                                    bottomLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(8),
+                                  ),
+                                  color: Color.fromRGBO(240, 246, 245, 1),
+                                ),
+                                child: Icon(
+                                  Icons.image,
+                                  size: 18,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .color,
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 3),
-                                child: Text('Photo',
+                                child: Text('Imagem',
                                     style:
                                         Theme.of(context).textTheme.subtitle2),
                               ),

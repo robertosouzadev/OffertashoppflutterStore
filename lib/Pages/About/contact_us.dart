@@ -10,7 +10,9 @@ import 'package:vendor/Components/drawer.dart';
 import 'package:vendor/Components/entry_field.dart';
 import 'package:vendor/Locale/locales.dart';
 import 'package:vendor/Theme/colors.dart';
+import 'package:vendor/Theme/style.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
+import 'package:vendor/constants/color.dart';
 
 import '../../constants/images_constants.dart';
 
@@ -62,7 +64,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
       appBar: AppBar(
         title: Text(
           locale.contactUs,
-          style: TextStyle(color: kMainTextColor),
+          style: TextStyle(color: ColorConstants.letterColor),
         ),
         centerTitle: true,
       ),
@@ -76,7 +78,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
               Image.asset(
                 ImageConstants.APP_LOGO,
                 scale: 2.5,
-                height: 280,
+                height: 98,
               ),
               Container(
                 child: Column(
@@ -92,28 +94,24 @@ class _ContactUsPageState extends State<ContactUsPage> {
                             .copyWith(fontSize: 16),
                       ),
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shadowColor: MaterialStateProperty.all(kHintColor),
-                          overlayColor: MaterialStateProperty.all(kHintColor),
-                          backgroundColor:
-                              MaterialStateProperty.all(kHintColor),
-                          foregroundColor:
-                              MaterialStateProperty.all(kHintColor),
-                        ),
-                        onPressed: () {
-                          if (!isLoading) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            sendCallBackRequest();
-                          }
-                        },
-                        child: Text(
-                          locale.callBackReq1,
-                          style: TextStyle(color: kMainTextColor),
+                    Container(
+                      height: 48,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: ElevatedButton(
+                          style: elevatedButtonStyleNegative(context),
+                          onPressed: () {
+                            if (!isLoading) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              sendCallBackRequest();
+                            }
+                          },
+                          child: Text(
+                            locale.callBackReq1,
+                            style: TextStyle(color: ColorConstants.white),
+                          ),
                         ),
                       ),
                     )

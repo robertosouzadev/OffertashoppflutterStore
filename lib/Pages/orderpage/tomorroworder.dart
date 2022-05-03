@@ -8,6 +8,7 @@ import 'package:vendor/Pages/Other/order_info.dart';
 import 'package:vendor/baseurl/baseurlg.dart';
 import 'package:vendor/beanmodel/appinfomodel.dart';
 import 'package:vendor/beanmodel/orderbean/todayorderbean.dart';
+import 'package:vendor/constants/color.dart';
 
 import '../../constants/images_constants.dart';
 
@@ -111,7 +112,7 @@ class _TomorrowOrderState extends State<TomorrowOrder> {
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Container(
-      color: Colors.grey[200],
+      color: ColorConstants.white,
       child: (!isLoading && newOrders != null && newOrders.length > 0)
           ? ListView.builder(
               padding: EdgeInsets.only(bottom: 20),

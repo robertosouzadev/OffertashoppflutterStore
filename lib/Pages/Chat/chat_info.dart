@@ -20,6 +20,8 @@ import 'package:vendor/beanmodel/chatmodel/chatmodel.dart';
 import 'package:vendor/beanmodel/chatmodel/global.dart' as global;
 import 'package:vendor/beanmodel/chatmodel/messageModel.dart';
 import 'package:vendor/beanmodel/orderbean/todayorderbean.dart';
+import 'package:vendor/constants/color.dart';
+import 'package:vendor/widgets/my_text_field.dart';
 
 import '../../Locale/locales.dart';
 
@@ -542,7 +544,7 @@ class _ChatInfoState extends State<ChatInfo> {
           // ],
           title: Text(
             widget.name,
-            style: TextStyle(color: kMainTextColor),
+            style: TextStyle(color: ColorConstants.letterColor),
           ),
           centerTitle: true,
         ),
@@ -581,7 +583,7 @@ class _ChatInfoState extends State<ChatInfo> {
                                           return messages.isEmpty
                                               ? buildText(
                                                   //AppLocalizations.of(context).txt_say_hi,
-                                                  'say hi')
+                                                  'Diga Oi')
                                               : Padding(
                                                   padding: EdgeInsets.only(
                                                       bottom: isShowSticker
@@ -660,30 +662,30 @@ class _ChatInfoState extends State<ChatInfo> {
           child: Row(
             children: [
               IconButton(
-                  onPressed: () {
-                    _showCupertinoModalSheet();
-                  },
-                  icon: Icon(Icons.camera)),
+                onPressed: () {
+                  _showCupertinoModalSheet();
+                },
+                icon: Icon(Icons.camera_alt),
+              ),
               Expanded(
-                child: TextFormField(
+                child: MyTextField(
+                  Key('1'),
                   controller: _message,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    hintText:
-                        //AppLocalizations.of(context).hnt_type_your_message,
-                        ' Type your Message',
-                    suffixIcon: IconButton(
-                      onPressed: () async {
-                        await sendMessage();
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        size: 25,
-                      ),
-                      color: Theme.of(context).primaryColor,
+                  prefixIcon: Icon(Icons.emoji_emotions_outlined),
+                  hintText:
+                      //AppLocalizations.of(context).hnt_type_your_message,
+                      ' Escreva sua mensagem',
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      await sendMessage();
+                    },
+                    icon: Icon(
+                      Icons.send,
+                      size: 25,
                     ),
-                    contentPadding: EdgeInsets.only(top: 5, left: 5),
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -699,11 +701,11 @@ class _ChatInfoState extends State<ChatInfo> {
       showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) => CupertinoActionSheet(
-          title: Text('Actions'),
+          title: Text('Ações'),
           actions: [
             CupertinoActionSheetAction(
               child: Text(
-                'Take Picture',
+                'Tirar uma foto',
                 style: Theme.of(context).textTheme.subtitle1.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -765,7 +767,7 @@ class _ChatInfoState extends State<ChatInfo> {
             )
           ],
           cancelButton: CupertinoActionSheetAction(
-            child: Text('Cancel',
+            child: Text('Cancelar',
                 style: TextStyle(color: Theme.of(context).primaryColor)),
             onPressed: () {
               Navigator.pop(context);

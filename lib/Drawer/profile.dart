@@ -225,10 +225,7 @@ class _MyProfileState extends State<MyProfile> {
                                   backgroundColor: Theme.of(context)
                                       .primaryColor
                                       .withAlpha(30),
-                                  child: Image(
-                                    image: NetworkImage('$storeImage'),
-                                    filterQuality: FilterQuality.medium,
-                                  ),
+                                  backgroundImage: NetworkImage('$storeImage'),
                                 ),
                               ),
                               SizedBox(height: 8),

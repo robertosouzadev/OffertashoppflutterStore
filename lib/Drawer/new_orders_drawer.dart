@@ -82,14 +82,17 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer>
               global.isChatNotTapped = true;
             });
             // Get.to(() => ChatScreen(a: widget.analytics, o: widget.observer));
-            Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => ChatInfo(
-                      chatId: global.localNotificationModel.chatId,
-                      name: global.localNotificationModel.firstName,
-                      storeId: global.localNotificationModel.storeId,
-                      userFcmToken: global.localNotificationModel.fcmToken,
-                      userId: global.localNotificationModel.userId,
-                    )));
+                  chatId: global.localNotificationModel.chatId,
+                  name: global.localNotificationModel.firstName,
+                  storeId: global.localNotificationModel.storeId,
+                  userFcmToken: global.localNotificationModel.fcmToken,
+                  userId: global.localNotificationModel.userId,
+                ),
+              ),
+            );
           }
         }
       }
@@ -156,7 +159,7 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer>
   Widget build(BuildContext context) {
     var locale = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: ColorConstants.backgroundColor,
       drawer: buildDrawer(context),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -168,8 +171,7 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer>
         ),
       ),
       body: Container(
-        height: 48,
-        color: Color.fromARGB(255, 244, 245, 245),
+        color: ColorConstants.white,
         child: DefaultTabController(
           length: 2,
           child: Column(
@@ -177,84 +179,100 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer>
               SizedBox(
                 height: 10,
               ),
-              TabBar(
+              Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
-                unselectedLabelColor: Color.fromRGBO(244, 246, 246, 1),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: ColorConstants.white),
-                tabs: [
-                  // Card(
-                  //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
-                  //   elevation: 3,
-                  //   child:
-
-                  Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Tab(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(locale.todayOrd,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstants.blackFull)),
-                        ),
-                      ),
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.primaryColor.withAlpha(20),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
                     ),
                   ),
+                  child: TabBar(
+                    padding: EdgeInsets.only(left: 2, right: 2),
+                    unselectedLabelColor: Color.fromRGBO(244, 246, 246, 1),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    automaticIndicatorColorAdjustment: true,
+                    indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: ColorConstants.white),
+                    tabs: [
+                      // Card(
+                      //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
+                      //   elevation: 3,
+                      //   child:
 
-                  // width: MediaQuery.of(context).size.width / 2,
-                  // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  // child: Text(
-
-                  // textAlign: TextAlign.center,
-                  // style: TextStyle(fontSize: 16),
-                  //   ),
-                  Container(
-                    height: 48,
-                    child: Tab(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 8, right: 8),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(locale.nextDayOrder,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstants.black3),),
+                      Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Tab(
+                          child: Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(locale.todayOrd,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.primaryColor)),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  // Card(
-                  //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
-                  //   elevation: 3,
-                  //   child: Container(
-                  //     width: MediaQuery.of(context).size.width / 2,
-                  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  //     child: Text(
-                  //       locale.nextDayOrder,
-                  //       textAlign: TextAlign.center,
-                  //       style: TextStyle(fontSize: 16),
-                  //     ),
-                  //   ),
-                  // )
-                ],
-                isScrollable: false,
-                controller: tabController,
-                indicatorWeight: 1,
-                indicatorColor: Colors.transparent,
-                labelPadding: EdgeInsets.all(0),
-                onTap: (int index) {
-                  setState(() {
-                    currentTabIndex = index;
-                  });
-                },
+
+                      // width: MediaQuery.of(context).size.width / 2,
+                      // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      // child: Text(
+
+                      // textAlign: TextAlign.center,
+                      // style: TextStyle(fontSize: 16),
+                      //   ),
+                      Container(
+                        height: 40,
+                        child: Tab(
+                          child: Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                locale.nextDayOrder,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.primaryColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      // Card(
+                      //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
+                      //   elevation: 3,
+                      //   child: Container(
+                      //     width: MediaQuery.of(context).size.width / 2,
+                      //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      //     child: Text(
+                      //       locale.nextDayOrder,
+                      //       textAlign: TextAlign.center,
+                      //       style: TextStyle(fontSize: 16),
+                      //     ),
+                      //   ),
+                      // )
+                    ],
+                    isScrollable: false,
+                    controller: tabController,
+                    indicatorWeight: 1,
+                    indicatorColor: Colors.transparent,
+                    labelPadding: EdgeInsets.all(0),
+                    onTap: (int index) {
+                      setState(() {
+                        currentTabIndex = index;
+                      });
+                    },
+                  ),
+                ),
               ),
               Expanded(
                 child: TabBarView(
@@ -298,24 +316,26 @@ Future<void> _showNotification(
           '$imageUrl'.toUpperCase() != 'NUll' &&
           '$imageUrl'.toUpperCase() != 'N/A') {
         AwesomeNotifications().createNotification(
-            content: NotificationContent(
-          id: 10,
-          channelKey: '2121',
-          title: '$title',
-          body: '$body',
-          icon: 'resource://drawable/icon',
-          bigPicture: '$imageUrl',
-          largeIcon: '$imageUrl',
-          notificationLayout: NotificationLayout.BigPicture,
-        ));
+          content: NotificationContent(
+            id: 10,
+            channelKey: '2121',
+            title: '$title',
+            body: '$body',
+            icon: 'resource://drawable/icon',
+            bigPicture: '$imageUrl',
+            largeIcon: '$imageUrl',
+            notificationLayout: NotificationLayout.BigPicture,
+          ),
+        );
       } else {
         AwesomeNotifications().createNotification(
-            content: NotificationContent(
-                id: 10,
-                channelKey: '2121',
-                title: '$title',
-                body: '$body',
-                icon: 'resource://drawable/icon'));
+          content: NotificationContent(
+              id: 10,
+              channelKey: '2121',
+              title: '$title',
+              body: '$body',
+              icon: 'resource://drawable/icon'),
+        );
       }
     }
   });
