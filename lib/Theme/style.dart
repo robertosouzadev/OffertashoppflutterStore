@@ -266,6 +266,13 @@ TextStyle textFieldSuffixStyle(BuildContext context) =>
           color: Colors.black,
         );
 
+//Chip general Style
+TextStyle chipStyle(BuildContext context) => TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 14,
+    color: Colors.black,
+    letterSpacing: 1.5);
+
 ButtonStyle elevatedButtonStyle(BuildContext context) => ButtonStyle(
       elevation: MaterialStateProperty.all(5),
       shadowColor: MaterialStateProperty.all(Theme.of(context).primaryColor),

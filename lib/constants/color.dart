@@ -14,4 +14,6 @@ class ColorConstants {
   static const Color letterColor = Color.fromARGB(255, 122, 122, 122);
   static const Color backgroundColor = Color.fromARGB(255, 237, 237, 237);
   static const Color white = Colors.white;
+  static const Color blackFull = Colors.black;
+  static const Color black3 = Color.fromARGB(255, 22, 22, 22);
 }

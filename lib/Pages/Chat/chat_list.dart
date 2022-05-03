@@ -157,7 +157,7 @@ class _ChatListPageState extends State<ChatListPage> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 top: MediaQuery.of(context).size.height / 3),
-                            child: Text('No chats found'),
+                            child: Text('Não há mensagens novas'),
                           ),
                         )
                   // : Align(

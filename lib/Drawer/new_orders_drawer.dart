@@ -162,105 +162,111 @@ class _NewOrdersDrawerState extends State<NewOrdersDrawer>
         preferredSize: Size.fromHeight(60),
         child: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text(
-            locale.newOrders,
-            style: TextStyle(
-              color: Theme.of(context).backgroundColor,
-            ),
-          ),
+          title: Text(locale.newOrders,
+              style: TextStyle(color: ColorConstants.blackFull)),
           centerTitle: true,
         ),
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            TabBar(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              unselectedLabelColor: ColorConstants.primaryColor,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: ColorConstants.primaryColor),
-              tabs: [
-                // Card(
-                //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
-                //   elevation: 3,
-                //   child:
-                Container(
-                  color: ColorConstants.primaryColor.withAlpha(30),
-                  child: Tab(
-                    icon: Icon(Icons.timer_sharp),
-                    child: Container(
-                      margin: EdgeInsets.only(left: 16, right: 16),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(locale.todayOrd,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                ),
-
-                // width: MediaQuery.of(context).size.width / 2,
-                // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                // child: Text(
-
-                // textAlign: TextAlign.center,
-                // style: TextStyle(fontSize: 16),
-                //   ),
-                Container(
-                  color: ColorConstants.primaryColor.withAlpha(30),
-                  child: Tab(
-                    icon: Icon(Icons.next_week),
-                    child: Container(
-                      margin: EdgeInsets.only(left: 8, right: 8),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(locale.nextDayOrder,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                )
-                // Card(
-                //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
-                //   elevation: 3,
-                //   child: Container(
-                //     width: MediaQuery.of(context).size.width / 2,
-                //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                //     child: Text(
-                //       locale.nextDayOrder,
-                //       textAlign: TextAlign.center,
-                //       style: TextStyle(fontSize: 16),
-                //     ),
-                //   ),
-                // )
-              ],
-              isScrollable: false,
-              controller: tabController,
-              indicatorWeight: 1,
-              indicatorColor: Colors.transparent,
-              labelPadding: EdgeInsets.all(0),
-              onTap: (int index) {
-                setState(() {
-                  currentTabIndex = index;
-                });
-              },
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: [
-                  TodayOrder(),
-                  TomorrowOrder(),
-                ],
+      body: Container(
+        height: 48,
+        color: Color.fromARGB(255, 244, 245, 245),
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
               ),
-            )
-          ],
+              TabBar(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                unselectedLabelColor: Color.fromRGBO(244, 246, 246, 1),
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: ColorConstants.white),
+                tabs: [
+                  // Card(
+                  //   color: currentTabIndex == 0 ? Colors.white : Colors.grey[200],
+                  //   elevation: 3,
+                  //   child:
+
+                  Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Tab(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16, right: 16),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(locale.todayOrd,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.blackFull)),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // width: MediaQuery.of(context).size.width / 2,
+                  // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  // child: Text(
+
+                  // textAlign: TextAlign.center,
+                  // style: TextStyle(fontSize: 16),
+                  //   ),
+                  Container(
+                    height: 48,
+                    child: Tab(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 8, right: 8),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(locale.nextDayOrder,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.black3),),
+                        ),
+                      ),
+                    ),
+                  )
+                  // Card(
+                  //   color: currentTabIndex == 1 ? Colors.white : Colors.grey[200],
+                  //   elevation: 3,
+                  //   child: Container(
+                  //     width: MediaQuery.of(context).size.width / 2,
+                  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  //     child: Text(
+                  //       locale.nextDayOrder,
+                  //       textAlign: TextAlign.center,
+                  //       style: TextStyle(fontSize: 16),
+                  //     ),
+                  //   ),
+                  // )
+                ],
+                isScrollable: false,
+                controller: tabController,
+                indicatorWeight: 1,
+                indicatorColor: Colors.transparent,
+                labelPadding: EdgeInsets.all(0),
+                onTap: (int index) {
+                  setState(() {
+                    currentTabIndex = index;
+                  });
+                },
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: [
+                    TodayOrder(),
+                    TomorrowOrder(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
